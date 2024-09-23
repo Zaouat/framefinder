@@ -8,7 +8,7 @@ const Header = ({ onSearchResults }) => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    onSearchResults({ movies, isLoading, error });
+    onSearchResults({ movies, isLoading, error, hasSearched: !!query });
   };
 
   return (

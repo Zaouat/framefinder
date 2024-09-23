@@ -3,17 +3,19 @@ import Header from "./components/Header";
 import MovieList from "./components/MovieList";
 import Footer from "./components/Footer";
 import { getMovieDetails } from "./services/api";
+import LoadingState from "./components/LoadingState";
 
 function App() {
-  const [searchResults, setSearchResults] = useState({
+  const [searchState, setSearchState] = useState({
     movies: [],
     isLoading: false,
     error: null,
+    hasSearched: false,
   });
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const handleSearchResults = (results) => {
-    setSearchResults(results);
+    setSearchState(results);
     setSelectedMovie(null);
   };
 
@@ -29,22 +31,21 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen bg-[#121c22]">
       <Header onSearchResults={handleSearchResults} />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        {searchResults.isLoading && <p className="text-white">Loading...</p>}
-        {searchResults.error && (
-          <p className="text-red-500">{searchResults.error}</p>
+      <main className="flex-grow container mx-auto px-4 pb-12">
+        {searchState.isLoading && <LoadingState />}
+        {searchState.error && (
+          <p className="text-red-500">{searchState.error}</p>
         )}
-        {!searchResults.isLoading &&
-          !searchResults.error &&
-          searchResults.movies.length > 0 && (
-            <MovieList
-              movies={searchResults.movies}
-              onSelectMovie={handleSelectMovie}
-            />
-          )}
+        {!searchState.isLoading && !searchState.error && (
+          <MovieList
+            movies={searchState.movies}
+            onSelectMovie={handleSelectMovie}
+            hasSearched={searchState.hasSearched}
+          />
+        )}
         {selectedMovie && (
-          <div className="text-white">
-            <h2>{selectedMovie.Title}</h2>
+          <div className="text-white mt-8">
+            <h2 className="text-2xl font-bold mb-4">{selectedMovie.Title}</h2>
             <p>{selectedMovie.Plot}</p>
           </div>
         )}

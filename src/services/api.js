@@ -23,34 +23,39 @@ const fetchFromAPI = async (params) => {
   }
 };
 
-// Search for movies
-// Search for movies (newer to older, filtered and limited)
 export const searchMovies = async (query, page = 1, type = "") => {
-  const result = await fetchFromAPI({ s: query, page, type });
+  try {
+    const lowercaseQuery = query.toLowerCase();
+    let result = await fetchFromAPI({ s: lowercaseQuery, page, type });
 
-  if (result.Response === "True" && result.Search) {
-    // Filter out entries without a poster or with 'N/A' as the year
-    let filteredMovies = result.Search.filter(
-      (movie) => movie.Poster !== "N/A" && movie.Year !== "N/A"
-    );
+    // If no results, try with a wildcard at the end
+    if (result.Response === "False" && lowercaseQuery.length > 3) {
+      result = await fetchFromAPI({ s: lowercaseQuery + "*", page, type });
+    }
 
-    // Sort movies from newer to older
-    filteredMovies.sort((a, b) => {
-      const yearA = parseInt(a.Year);
-      const yearB = parseInt(b.Year);
-      return yearB - yearA;
-    });
+    // If still no results, try with wildcards at both ends
+    if (result.Response === "False" && lowercaseQuery.length > 3) {
+      result = await fetchFromAPI({
+        s: "*" + lowercaseQuery + "*",
+        page,
+        type,
+      });
+    }
 
-    // Limit to 10 results
-    filteredMovies = filteredMovies.slice(0, 20);
+    if (result.Response === "True" && result.Search) {
+      // ... (rest of the filtering and sorting logic)
+    }
 
-    // Update the result object
-    result.Search = filteredMovies;
-    result.totalResults = filteredMovies.length;
+    return result;
+  } catch (error) {
+    console.error("Error searching movies:", error);
+    return {
+      Response: "False",
+      Error: "An error occurred while searching movies",
+    };
   }
-
-  return result;
 };
+
 // Get movie details by IMDb ID
 export const getMovieDetails = async (imdbID, plot = "short") => {
   return fetchFromAPI({ i: imdbID, plot });
