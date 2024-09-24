@@ -1,17 +1,19 @@
 // NavBar.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "./ThemeContext";
 import NotificationDrawer from "./NotificationDrawer";
 import MenuDrawer from "./MenuDrawer";
 import { getMovieNotifications } from "../services/api";
 import "../custom-theme.css";
 
-const NavBar = () => {
+const NavBar = ({ isDetailPage = false }) => {
   const { theme, setTheme } = useTheme();
   const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] =
     useState(false);
   const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -32,6 +34,10 @@ const NavBar = () => {
 
   const toggleNotificationDrawer = () => {
     setIsNotificationDrawerOpen(!isNotificationDrawerOpen);
+  };
+
+  const handleBackClick = () => {
+    navigate(-1);
   };
 
   return (
@@ -56,25 +62,47 @@ const NavBar = () => {
             <div className="drawer-content">
               <div className="navbar bg-base-100 py-2 px-8 rounded-xl">
                 <div className="navbar-start">
-                  <label
-                    htmlFor="my-menu-drawer"
-                    className="btn btn-ghost btn-circle drawer-button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                  {isDetailPage ? (
+                    <button
+                      onClick={handleBackClick}
+                      className="btn btn-ghost btn-circle"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h7"
-                      />
-                    </svg>
-                  </label>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <label
+                      htmlFor="my-menu-drawer"
+                      className="btn btn-ghost btn-circle drawer-button"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4 6h16M4 12h16M4 18h7"
+                        />
+                      </svg>
+                    </label>
+                  )}
                 </div>
                 <div className="navbar-center">
                   <a

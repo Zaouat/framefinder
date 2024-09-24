@@ -9,12 +9,17 @@ const Header = ({ onSearchResults }) => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    onSearchResults({ movies, isLoading, error, hasSearched: !!query });
+    onSearchResults({
+      movies,
+      isLoading,
+      error,
+      hasSearched: !!query,
+    });
   };
 
   return (
     <header className="bg-theme-adaptive border-b-0">
-      <NavBar />
+      <NavBar isDetailPage={false} />
       <div className="hero h-[80vh] relative overflow-hidden">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover"
