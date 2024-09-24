@@ -6,7 +6,8 @@ const NavBar = () => {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === "sunset" ? "bumblebee" : "sunset");
+    const newTheme = theme === "sunset" ? "winter" : "sunset";
+    setTheme(newTheme);
   };
 
   return (
@@ -68,7 +69,7 @@ const NavBar = () => {
             <input
               type="checkbox"
               onChange={toggleTheme}
-              checked={theme === "light"}
+              checked={theme === "winter"}
             />
             <svg
               className="swap-on h-5 w-5 fill-current"
