@@ -43,9 +43,17 @@ const NavBar = () => {
           </div>
         </div>
         <div className="navbar-center">
-          <h1 className="btn btn-ghost font- text-2xl text-white">
-            🎬 FrameFinder.
-          </h1>
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.reload();
+            }}
+          >
+            <h1 className="btn btn-ghost font- text-2xl text-white">
+              🎬 FrameFinder.
+            </h1>
+          </a>
         </div>
         <div className="navbar-end">
           <button className="btn btn-ghost btn-circle">
