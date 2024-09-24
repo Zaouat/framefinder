@@ -13,7 +13,7 @@ const Header = ({ onSearchResults }) => {
   };
 
   return (
-    <header className="bg-theme-adaptive">
+    <header className="bg-theme-adaptive border-b-0">
       <NavBar />
       <div className="hero h-[80vh] relative overflow-hidden">
         <video

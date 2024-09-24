@@ -52,7 +52,7 @@ function App() {
     <ThemeProvider>
       <div className="flex flex-col min-h-screen bg-theme-adaptive">
         <Header onSearchResults={handleSearchResults} />
-        <main className="flex-grow container mx-auto px-4 pb-12">
+        <main className="flex-grow container mx-auto px-4 pb-12 pt-6">
           {searchState.isLoading && <LoadingState />}
           {searchState.error && (
             <p className="text-red-500">{searchState.error}</p>

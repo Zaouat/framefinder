@@ -38,14 +38,14 @@
 
     .gradient-theme-adaptive {
         @apply bg-gradient-to-t from-white from-white to-transparent;
-        background-size: 100% 28%;
+        background-size: 100% 30%;
         background-position: bottom;
         background-repeat: no-repeat;
     }
 
     [data-theme="sunset"] .gradient-theme-adaptive {
         @apply bg-gradient-to-t from-[#121c22] to-transparent;
-        background-size: 100% 100%;
+        background-size: 100% 90%;
         background-position: bottom;
         background-repeat: no-repeat;
     }
