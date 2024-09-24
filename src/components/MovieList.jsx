@@ -1,7 +1,15 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
+import MovieCard from "./MovieCard";
 
-const MovieList = ({ movies, onSelectMovie, hasSearched }) => {
+const MovieList = ({
+  movies,
+  onSelectMovie,
+  hasSearched,
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
   if (!hasSearched) {
     return (
       <div className="flex flex-col items-center content-center justify-center h-full w-full animate-fadeIn">
@@ -32,33 +40,46 @@ const MovieList = ({ movies, onSelectMovie, hasSearched }) => {
     );
   }
 
+  const renderPagination = () => {
+    return (
+      <div className="flex justify-center mt-8">
+        <div className="join">
+          <button
+            className="join-item btn"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            «
+          </button>
+          <button className="join-item btn">{currentPage}</button>
+          <button
+            className="join-item btn"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            »
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="animate-fadeIn">
-      <div className="flex items-center mb-4 text-gray">
+      <div className="flex items-center mb-4 text-gray-400">
         <FaSearch className="mr-2" size={14} />
         <h2 className="text-md font-semibold uppercase">Search Results</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {movies.map((movie) => (
-          <div
+          <MovieCard
             key={movie.imdbID}
-            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer transform transition-transform duration-200 hover:scale-105"
-            onClick={() => onSelectMovie(movie.imdbID)}
-          >
-            <img
-              src={movie.Poster}
-              alt={movie.Title}
-              className="w-full h-64 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-white mb-2">
-                {movie.Title}
-              </h3>
-              <p className="text-gray-400">{movie.Year}</p>
-            </div>
-          </div>
+            movie={movie}
+            onSelect={onSelectMovie}
+          />
         ))}
       </div>
+      {totalPages > 1 && renderPagination()}
     </div>
   );
 };
