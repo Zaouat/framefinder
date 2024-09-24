@@ -18,7 +18,7 @@ const MovieList = ({
           alt="No search results"
           className="w-32 h-32 object-contain mb-4"
         />
-        <p className="text-md text-white font-semibold">
+        <p className="text-md text-theme-adaptive font-semibold smalltext-theme-adaptive">
           Start searching for movies to see results here.
         </p>
       </div>
@@ -33,7 +33,7 @@ const MovieList = ({
           alt="No search results"
           className="w-32 h-32 object-contain mb-4"
         />
-        <p className="text-md text-white font-semibold">
+        <p className="text-md text-theme-adaptive font-semibold smalltext-theme-adaptive">
           We couldn't find any movies matching your search.
         </p>
       </div>

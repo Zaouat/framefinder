@@ -32,7 +32,7 @@ const SearchBar = ({ onSearch }) => {
           value={query}
           onChange={handleChange}
           placeholder="What do you want to watch?"
-          className="input input-bordered w-full font-semibold py-3 px-4 pl-16 pr-12 rounded-full bg-gray-500 bg-opacity-40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="input input-bordered w-full font-semibold py-3 px-4 pl-16 pr-12 rounded-full bg-gray-500 bg-opacity-40 text-white placeholder-theme-adaptive focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <FaSearch className="h-4 w-4 text-gray-400" />

@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer text-base-content p-2 pt-24 px-24 bg-gradient-to-b from-[#121c22] to-base-200">
+    <footer className="footer text-theme-adaptive p-2 pt-2 px-24 gradient-theme-adaptive-footer">
       <div className="w-full flex flex-col md:flex-row justify-between items-start">
         <aside className="flex items-center mb-8">
           <div className="navbar-center">
@@ -13,7 +13,7 @@ const Footer = () => {
                 window.location.reload();
               }}
             >
-              <h1 className="btn btn-ghost font-bold text-2xl text-white mt-6">
+              <h1 className="btn btn-ghost font-bold text-2xl text-theme-adaptive mt-6">
                 🎬 FrameFinder.
               </h1>
             </a>
@@ -34,10 +34,14 @@ const Footer = () => {
 
         <div className="flex flex-col items-end">
           <nav className="flex flex-wrap justify-end md:flex-row items-center gap-6 mb-8 pt-8">
-            <a className="link link-hover font-semibold">About Me</a>
-            <a className="link link-hover font-semibold">Get in Touch</a>
+            <a className="link link-hover font-semibold smalltext-theme-adaptive">
+              About Me
+            </a>
+            <a className="link link-hover font-semibold smalltext-theme-adaptive">
+              Get in Touch
+            </a>
             <a
-              className="link link-hover font-semibold"
+              className="link link-hover font-semibold smalltext-theme-adaptive"
               href="https://www.omdbapi.com/"
               target="_blank"
             >

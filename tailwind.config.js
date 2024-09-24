@@ -14,15 +14,14 @@ export default {
     themes: [
       {
         mytheme: {
-          // Light gray background
           "font-family": "Open Sans, sans-serif",
         },
       },
-      "light",
-      "dark",
+      "bumblebee",
       "sunset",
     ],
-    darkTheme: "dark",
+    lightTheme: "bumblebee",
+    darkTheme: "sunset",
     base: true,
     styled: true,
     utils: true,

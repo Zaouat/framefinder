@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .text-theme-adaptive {
+        @apply text-black;
+    }
+
+    [data-theme="sunset"] .text-theme-adaptive {
+        @apply text-white;
+    }
+
+    .smalltext-theme-adaptive {
+        color: #485560;
+    }
+
+    [data-theme="sunset"] .smalltext-theme-adaptive {
+        @apply text-base-content;
+    }
+
+    .placeholder-theme-adaptive {
+        @apply placeholder-white;
+    }
+
+    [data-theme="sunset"] .placeholder-theme-adaptive {
+        @apply placeholder-gray-400;
+    }
+
+
+    .bg-theme-adaptive {
+        @apply bg-white;
+    }
+
+    [data-theme="sunset"] .bg-theme-adaptive {
+        @apply bg-base-100;
+    }
+
+    .gradient-theme-adaptive {
+        @apply bg-gradient-to-t from-white from-white to-transparent;
+        background-size: 100% 28%;
+        background-position: bottom;
+        background-repeat: no-repeat;
+    }
+
+    [data-theme="sunset"] .gradient-theme-adaptive {
+        @apply bg-gradient-to-t from-[#121c22] to-transparent;
+        background-size: 100% 100%;
+        background-position: bottom;
+        background-repeat: no-repeat;
+    }
+
+    .gradient-theme-adaptive-footer {
+        @apply bg-gradient-to-t from-gray-100 to-white;
+        background-size: 100% 100%;
+        background-position: bottom;
+        background-repeat: no-repeat;
+    }
+
+    [data-theme="sunset"] .gradient-theme-adaptive-footer {
+        @apply bg-gradient-to-b from-[#121c22] to-base-200;
+        background-size: 100% 100%;
+        background-position: bottom;
+        background-repeat: no-repeat;
+    }
+}

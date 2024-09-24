@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "./Navbar";
 import SearchBar from "./SearchBar";
 import useMovieSearch from "../hooks/useMovieSearch";
+import "../custom-theme.css";
 
 const Header = ({ onSearchResults }) => {
   const { movies, isLoading, error, setSearchQuery } = useMovieSearch();
@@ -12,7 +13,7 @@ const Header = ({ onSearchResults }) => {
   };
 
   return (
-    <header className="bg-[#121c22]">
+    <header className="bg-theme-adaptive">
       <NavBar />
       <div className="hero h-[80vh] relative overflow-hidden">
         <video
@@ -25,7 +26,7 @@ const Header = ({ onSearchResults }) => {
           Your browser does not support the video tag.
         </video>
 
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-[#121c22] to-transparent"></div>
+        <div className="absolute inset-x-0 bottom-0 h-full gradient-theme-adaptive"></div>
 
         <div className="relative z-10 hero-content text-neutral-content text-center flex flex-col items-center justify-center h-full">
           <div className="max-w-3xl">

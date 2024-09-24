@@ -4,6 +4,7 @@ import MovieList from "./components/MovieList";
 import Footer from "./components/Footer";
 import { getMovieDetails } from "./services/api";
 import LoadingState from "./components/LoadingState";
+import { ThemeProvider } from "./components/ThemeContext";
 
 function App() {
   const [searchState, setSearchState] = useState({
@@ -48,32 +49,29 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#121c22]">
-      <Header onSearchResults={handleSearchResults} />
-      <main className="flex-grow container mx-auto px-4 pb-12">
-        {searchState.isLoading && <LoadingState />}
-        {searchState.error && (
-          <p className="text-red-500">{searchState.error}</p>
-        )}
-        {!searchState.isLoading && !searchState.error && (
-          <MovieList
-            movies={getPaginatedMovies()}
-            onSelectMovie={handleSelectMovie}
-            hasSearched={searchState.hasSearched}
-            currentPage={searchState.currentPage}
-            totalPages={searchState.totalPages}
-            onPageChange={handlePageChange}
-          />
-        )}
-        {/* {selectedMovie && (
-          <div className="text-white mt-8">
-            <h2 className="text-2xl font-bold mb-4">{selectedMovie.Title}</h2>
-            <p>{selectedMovie.Plot}</p>
-          </div>
-        )} */}
-      </main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="flex flex-col min-h-screen bg-theme-adaptive">
+        <Header onSearchResults={handleSearchResults} />
+        <main className="flex-grow container mx-auto px-4 pb-12">
+          {searchState.isLoading && <LoadingState />}
+          {searchState.error && (
+            <p className="text-red-500">{searchState.error}</p>
+          )}
+          {!searchState.isLoading && !searchState.error && (
+            <MovieList
+              movies={getPaginatedMovies()}
+              onSelectMovie={handleSelectMovie}
+              hasSearched={searchState.hasSearched}
+              currentPage={searchState.currentPage}
+              totalPages={searchState.totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </main>
+        <div className="divider"></div>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 
