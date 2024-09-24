@@ -81,3 +81,56 @@ export const getPosterUrl = (imdbID) => {
 export const advancedSearch = async (params) => {
   return fetchFromAPI(params);
 };
+export const getMovieNotifications = async () => {
+  try {
+    const count = Math.floor(Math.random() * 5) + 3; // Random count between 3 and 7
+    const page = Math.floor(Math.random() * 5) + 1; // Random page between 1 and 5
+    const popularMovies = await searchMovies("popular", page, "movie");
+
+    const shuffledMovies = popularMovies.Search.sort(() => 0.5 - Math.random());
+    const selectedMovies = shuffledMovies.slice(0, count);
+
+    const notifications = selectedMovies.map((movie) => {
+      const notificationTypes = [
+        `New review for "${movie.Title}"`,
+        `"${movie.Title}" is now available for streaming`,
+        `Behind the scenes: "${movie.Title}"`,
+        `Cast interview: "${movie.Title}"`,
+        `Box office update: "${movie.Title}"`,
+        `Fan theories about "${movie.Title}"`,
+        `Director's cut of "${movie.Title}" announced`,
+        `Sequel rumors for "${movie.Title}"`,
+        `"${movie.Title}" added to award season predictions`,
+      ];
+
+      const randomContent = [
+        `Check out the latest updates for ${movie.Title} (${movie.Year})`,
+        `Don't miss the buzz around ${movie.Title}!`,
+        `Exciting news about ${movie.Title} just dropped!`,
+        `Fans are talking about ${movie.Title}. Here's why!`,
+        `${movie.Title} is making waves in the film industry`,
+      ];
+
+      return {
+        id: movie.imdbID,
+        title:
+          notificationTypes[
+            Math.floor(Math.random() * notificationTypes.length)
+          ],
+        content:
+          randomContent[Math.floor(Math.random() * randomContent.length)],
+        poster: movie.Poster,
+        timestamp: new Date(
+          Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)
+        ).toISOString(), // Random timestamp within the last week
+      };
+    });
+
+    return notifications.sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+    ); // Sort by timestamp, most recent first
+  } catch (error) {
+    console.error("Error generating movie notifications:", error);
+    return [];
+  }
+};

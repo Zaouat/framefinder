@@ -65,12 +65,12 @@ const MovieList = ({
   };
 
   return (
-    <div className="animate-fadeIn">
+    <div className="animate-fadeIn px-28">
       <div className="flex items-center mb-4 text-gray-400">
         <FaSearch className="mr-2" size={14} />
         <h2 className="text-md font-semibold uppercase">Search Results</h2>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {movies.map((movie) => (
           <MovieCard
             key={movie.imdbID}
