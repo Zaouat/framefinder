@@ -4,19 +4,52 @@ import { getMovieDetails } from "../services/api";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
 import "../index.css";
-import { FaStar, FaImdb, FaCalendar, FaClock, FaPlay } from "react-icons/fa";
+import {
+  FaStar,
+  FaImdb,
+  FaCalendar,
+  FaClock,
+  FaPlay,
+  FaTimes,
+} from "react-icons/fa";
 
 const MovieDetail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState(null);
+
+  const getYouTubeTrailerUrl = async (movieTitle, year) => {
+    const apiKey = "AIzaSyAwJjhuUj2jmShhEc6lTds-IYjR9QuFfes";
+    const encodedTitle = encodeURIComponent(
+      `${movieTitle} ${year} official trailer`
+    );
+    const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodedTitle}&key=${apiKey}&type=video`;
+
+    try {
+      const response = await fetch(searchUrl);
+      const data = await response.json();
+      if (data.items && data.items.length > 0) {
+        const videoId = data.items[0].id.videoId;
+        return `https://www.youtube.com/embed/${videoId}`;
+      } else {
+        throw new Error("No trailer found");
+      }
+    } catch (error) {
+      console.error("Error fetching trailer:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
         const details = await getMovieDetails(id);
         setMovie(details);
+        const trailer = await getYouTubeTrailerUrl(details.Title, details.Year);
+        setTrailerUrl(trailer);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch movie details");
@@ -44,7 +77,6 @@ const MovieDetail = () => {
   ];
 
   const getAvatarImage = (name) => {
-    // Use the name as a seed to generate a consistent avatar for each person
     const seed = encodeURIComponent(name.trim().toLowerCase());
     return `https://api.dicebear.com/6.x/avataaars/svg?seed=${seed}`;
   };
@@ -62,6 +94,41 @@ const MovieDetail = () => {
       <div>
         <h3 className="text-sm font-semibold">{name}</h3>
         <p className="text-xs text-gray-400">{role}</p>
+      </div>
+    </div>
+  );
+
+  const TrailerModal = () => (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+      onClick={() => setShowTrailer(false)}
+    >
+      <div
+        className="relative w-4/5 md:w-2/3 lg:w-1/2 aspect-video rounded-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={() => setShowTrailer(false)}
+          className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+        >
+          <FaTimes size={24} />
+        </button>
+        <div className="w-full h-full rounded-xl">
+          {trailerUrl ? (
+            <iframe
+              src={trailerUrl}
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="movie trailer"
+              className="w-full h-full rounded-xl"
+            ></iframe>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-white bg-gray-800 rounded-xl">
+              No trailer available
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -89,7 +156,10 @@ const MovieDetail = () => {
                 <div className="flex flex-col items-center">
                   <div className="relative">
                     <div className="request-loader">
-                      <button className="btn btn-ghost btn-circle btn-lg group">
+                      <button
+                        onClick={() => setShowTrailer(true)}
+                        className="btn btn-ghost btn-circle btn-lg group"
+                      >
                         <FaPlay className="text-xl" />
                       </button>
                     </div>
@@ -98,7 +168,7 @@ const MovieDetail = () => {
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-4 mb-6">
-                <span className="px-3 py-1 rounded-full text-sm font-semibold bg-purple-600">
+                <span className="px-3 py-2 rounded-full text-sm font-bold bg-purple-600">
                   {movie.Type}
                 </span>
                 <div className="flex items-center">
@@ -119,7 +189,7 @@ const MovieDetail = () => {
                 {movie.Genre.split(", ").map((genre, index) => (
                   <span
                     key={index}
-                    className={`inline-block px-2 py-1 mr-2 mb-2 text-xs font-semibold rounded-full ${
+                    className={`inline-block px-3 py-2 mr-2 mb-2 text-xs font-bold rounded-full ${
                       categoryColors[index % categoryColors.length]
                     }`}
                   >
@@ -161,6 +231,7 @@ const MovieDetail = () => {
         </div>
       </main>
       <Footer />
+      {showTrailer && <TrailerModal />}
     </div>
   );
 };
