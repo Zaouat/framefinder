@@ -1,4 +1,3 @@
-// NavBar.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "./ThemeContext";
@@ -7,7 +6,8 @@ import MenuDrawer from "./MenuDrawer";
 import { getMovieNotifications } from "../services/api";
 import "../custom-theme.css";
 
-const NavBar = ({ isDetailPage = false }) => {
+const NavBar = ({ isDetailPage = false, isfromcategory }) => {
+  console.log(isfromcategory);
   const { theme, setTheme } = useTheme();
   const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] =
@@ -60,11 +60,16 @@ const NavBar = ({ isDetailPage = false }) => {
                   {isDetailPage ? (
                     <button
                       onClick={(e) => {
-                        e.preventDefault();
-                        if (window.location.pathname === "/") {
-                          window.location.reload();
+                        if (isfromcategory) {
+                          window.history.back();
                         } else {
-                          window.location.href = "/";
+                          e.preventDefault();
+
+                          if (window.location.pathname === "/") {
+                            window.location.reload();
+                          } else {
+                            window.location.href = "/";
+                          }
                         }
                       }}
                       className="btn btn-ghost btn-circle"

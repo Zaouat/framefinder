@@ -5,7 +5,9 @@ import ContentList from "./components/ContentList";
 import ContentDetail from "./components/ContentDetail";
 import LoadingState from "./components/LoadingState";
 import { ThemeProvider } from "./components/ThemeContext";
-import AboutMe from "./components/AboutMe"; // Import the new AboutMe component
+import AboutMe from "./components/AboutMe";
+import CategoryPage from "./components/CategoryPage";
+import FAQs from "./components/FAQs";
 
 function App() {
   const [searchState, setSearchState] = useState({
@@ -66,7 +68,9 @@ function App() {
             }
           />
           <Route path="/:mediaType/:id" element={<ContentDetail />} />
-          <Route path="/about" element={<AboutMe />} />{" "}
+          <Route path="/about" element={<AboutMe />} />
+          <Route path="/category/:category" element={<CategoryPage />} />{" "}
+          <Route path="/faqs" element={<FAQs />} />
           {/* Add this new route */}
         </Routes>
       </Router>

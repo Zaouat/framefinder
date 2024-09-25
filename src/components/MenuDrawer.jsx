@@ -1,5 +1,6 @@
 // MenuDrawer.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 const MenuDrawer = ({ onClose }) => {
   return (
@@ -18,38 +19,58 @@ const MenuDrawer = ({ onClose }) => {
 
         <ul className="menu text-md font-semibold font-biennale flex-grow">
           <li>
-            <a href="/" className="py-3">
+            <Link to="/" className="py-3" onClick={onClose}>
               Home
-            </a>
+            </Link>
           </li>
           <li>
             <details>
               <summary className="py-3">Categories</summary>
               <ul className="pl-4">
                 <li>
-                  <a className="py-2">Action</a>
+                  <Link
+                    to="/category/action"
+                    className="py-2"
+                    onClick={onClose}
+                  >
+                    Action
+                  </Link>
                 </li>
                 <li>
-                  <a className="py-2">Comedy</a>
+                  <Link
+                    to="/category/comedy"
+                    className="py-2"
+                    onClick={onClose}
+                  >
+                    Comedy
+                  </Link>
                 </li>
                 <li>
-                  <a className="py-2">Drama</a>
+                  <Link to="/category/drama" className="py-2" onClick={onClose}>
+                    Drama
+                  </Link>
                 </li>
                 <li>
-                  <a className="py-2">Sci-Fi</a>
+                  <Link
+                    to="/category/sci-fi"
+                    className="py-2"
+                    onClick={onClose}
+                  >
+                    Sci-Fi
+                  </Link>
                 </li>
               </ul>
             </details>
           </li>
           <li>
-            <a href="/favorites" className="py-3">
+            <Link to="/favorites" className="py-3" onClick={onClose}>
               My Favorites
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/help" className="py-3">
+            <Link to="/faqs" className="py-3" onClick={onClose}>
               FAQs
-            </a>
+            </Link>
           </li>
         </ul>
         <div className="mt-auto pt-4">

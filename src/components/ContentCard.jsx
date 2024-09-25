@@ -2,7 +2,7 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const ContentCard = ({ content }) => {
+const ContentCard = ({ content, isFromCategory }) => {
   const posterPath = content.poster_path
     ? `https://image.tmdb.org/t/p/w500${content.poster_path}`
     : "/placeholder.png";
@@ -13,7 +13,11 @@ const ContentCard = ({ content }) => {
   const linkTo = `/${mediaType}/${content.id}`;
 
   return (
-    <Link to={linkTo} className="block">
+    <Link
+      to={linkTo}
+      state={{ fromCategory: isFromCategory, previousPath: location.pathname }}
+      className="block"
+    >
       <div className="relative aspect-[2/3] rounded-lg overflow-hidden cursor-pointer group">
         <img
           src={posterPath}

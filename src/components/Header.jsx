@@ -40,9 +40,8 @@ const Header = ({ onSearchResults }) => {
             <h1 className="mb-4 text-6xl font-bold text-white">
               What would you like to watch this afternoon?
             </h1>
-            <p className="mb-8 text-xl text-white">
-              Watch your favourite shows and movies with this open source
-              streaming app.
+            <p className="mb-8 text-md text-white">
+              Your ultimate movie and TV show search engine.
             </p>
             <SearchBar onSearch={handleSearch} />
           </div>

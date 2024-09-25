@@ -76,6 +76,7 @@ const ContentList = ({
             key={item.id}
             content={item}
             onSelect={onSelectContent}
+            isFromCategory={false}
           />
         ))}
       </div>

@@ -119,6 +119,40 @@ export const searchByTitle = async (title, year = "", type = "movie") => {
   };
 };
 
+// Add this to your existing api.js file
+
+export const getCategoryContent = async (category, page = 1) => {
+  try {
+    const movieResponse = await fetchFromAPI("/discover/movie", {
+      with_genres: category,
+      page: page,
+      sort_by: "popularity.desc",
+    });
+
+    const tvResponse = await fetchFromAPI("/discover/tv", {
+      with_genres: category,
+      page: page,
+      sort_by: "popularity.desc",
+    });
+
+    const combinedResults = [
+      ...movieResponse.results.map((item) => ({
+        ...item,
+        media_type: "movie",
+      })),
+      ...tvResponse.results.map((item) => ({ ...item, media_type: "tv" })),
+    ];
+
+    return {
+      results: combinedResults,
+      total_pages: Math.max(movieResponse.total_pages, tvResponse.total_pages),
+      total_results: movieResponse.total_results + tvResponse.total_results,
+    };
+  } catch (error) {
+    console.error("Error fetching category content:", error);
+    throw error;
+  }
+};
 export const getSeasonEpisodes = async (tvId, season) => {
   return fetchFromAPI(`/tv/${tvId}/season/${season}`);
 };

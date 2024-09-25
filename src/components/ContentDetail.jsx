@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { getMovieDetails, getTVShowDetails } from "../services/api";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
 import "../index.css";
 import PageTransition from "./PageTransition";
-
 import {
   FaStar,
   FaCalendar,
@@ -23,6 +22,8 @@ const ContentDetail = () => {
   const [error, setError] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(1);
+  const location = useLocation();
+  const [isFromCategory, setIsFromCategory] = useState(false);
 
   useEffect(() => {
     const fetchContentDetails = async () => {
@@ -43,8 +44,11 @@ const ContentDetail = () => {
       }
     };
 
+    // // Check if the page was loaded from a category
+    setIsFromCategory(location.state?.fromCategory || false);
+
     fetchContentDetails();
-  }, [id, mediaType]);
+  }, [id, mediaType, location]);
 
   if (loading) return <PageTransition />;
   if (error)
@@ -131,7 +135,10 @@ const ContentDetail = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-theme-adaptive text-theme-adaptive">
-      <NavBar isDetailPage={true} />
+      <NavBar
+        isDetailPage={true}
+        isfromcategory={location.state?.fromCategory}
+      />
       <main className="flex-grow pt-20">
         <div
           className="absolute top-0 left-0 w-full h-72 bg-cover bg-center opacity-20 blur-sm"
