@@ -13,7 +13,6 @@ const NavBar = ({ isDetailPage = false }) => {
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] =
     useState(false);
   const [notifications, setNotifications] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -34,10 +33,6 @@ const NavBar = ({ isDetailPage = false }) => {
 
   const toggleNotificationDrawer = () => {
     setIsNotificationDrawerOpen(!isNotificationDrawerOpen);
-  };
-
-  const handleBackClick = () => {
-    navigate(-1);
   };
 
   return (
@@ -64,7 +59,14 @@ const NavBar = ({ isDetailPage = false }) => {
                 <div className="navbar-start">
                   {isDetailPage ? (
                     <button
-                      onClick={handleBackClick}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (window.location.pathname === "/") {
+                          window.location.reload();
+                        } else {
+                          window.location.href = "/";
+                        }
+                      }}
                       className="btn btn-ghost btn-circle"
                     >
                       <svg
@@ -109,7 +111,11 @@ const NavBar = ({ isDetailPage = false }) => {
                     href="/"
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.reload();
+                      if (window.location.pathname === "/") {
+                        window.location.reload();
+                      } else {
+                        window.location.href = "/";
+                      }
                     }}
                   >
                     <h1 className="btn btn-ghost font- text-2xl text-theme-adaptive">

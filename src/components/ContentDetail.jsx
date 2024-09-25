@@ -6,7 +6,15 @@ import Footer from "./Footer";
 import "../index.css";
 import PageTransition from "./PageTransition";
 
-import { FaStar, FaCalendar, FaClock, FaPlay, FaTimes } from "react-icons/fa";
+import {
+  FaStar,
+  FaCalendar,
+  FaClock,
+  FaPlay,
+  FaTimes,
+  FaListUl,
+  FaTv,
+} from "react-icons/fa";
 
 const ContentDetail = () => {
   const { id, mediaType } = useParams();
@@ -14,6 +22,7 @@ const ContentDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
+  const [selectedSeason, setSelectedSeason] = useState(1);
 
   useEffect(() => {
     const fetchContentDetails = async () => {
@@ -196,7 +205,7 @@ const ContentDetail = () => {
                 ))}
               </div>
               <p className="text-lg mb-6">{content.overview}</p>
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="flex items-center">
                   <FaCalendar className="mr-2 text-gray-400" />
                   <span className="font-bold mr-2">
@@ -206,6 +215,7 @@ const ContentDetail = () => {
                   </span>
                   <span>{new Date(releaseDate).toLocaleDateString()}</span>
                 </div>
+
                 {runtime && (
                   <div className="flex items-center">
                     <FaClock className="mr-2 text-gray-400" />
@@ -216,6 +226,24 @@ const ContentDetail = () => {
                   </div>
                 )}
               </div>
+              {mediaType === "tv" &&
+                content.seasons &&
+                content.seasons.length > 0 && (
+                  <div className="mb-6">
+                    <div className="flex items-center mb-4">
+                      <FaListUl className="mr-2 text-gray-400" />
+                      <span className="font-bold mr-2">Number of Seasons:</span>
+                      <span>{content.number_of_seasons}</span>
+                    </div>
+                    <div className="flex items-center mb-4">
+                      <FaTv className="mr-2 text-gray-400" />
+                      <span className="font-bold mr-2">
+                        Number of Episodes:
+                      </span>
+                      <span>{content.number_of_episodes}</span>
+                    </div>
+                  </div>
+                )}
               <div className="mb-6">
                 <h2 className="text-2xl font-semibold mb-4">Cast</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
