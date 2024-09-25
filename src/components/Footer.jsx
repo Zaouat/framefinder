@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -10,7 +11,11 @@ const Footer = () => {
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                window.location.reload();
+                if (window.location.pathname === "/") {
+                  window.location.reload();
+                } else {
+                  window.location.href = "/";
+                }
               }}
             >
               <h1 className="btn btn-ghost font-bold text-2xl text-theme-adaptive mt-6">
@@ -34,16 +39,25 @@ const Footer = () => {
 
         <div className="flex flex-col items-end">
           <nav className="flex flex-wrap justify-end md:flex-row items-center gap-6 mb-8 pt-8">
-            <a className="link link-hover font-semibold smalltext-theme-adaptive">
+            <Link
+              to="/about"
+              className="link link-hover font-semibold smalltext-theme-adaptive"
+              onClick={() => setTimeout(() => window.scrollTo(0, 0), 0)}
+            >
               About Me
-            </a>
-            <a className="link link-hover font-semibold smalltext-theme-adaptive">
+            </Link>
+            <a
+              href="mailto:zaouatabdellah@gmail.com"
+              target="_blank"
+              className="link link-hover font-semibold smalltext-theme-adaptive"
+            >
               Get in Touch
             </a>
             <a
               className="link link-hover font-semibold smalltext-theme-adaptive"
-              href="https://www.omdbapi.com/"
+              href="https://www.themoviedb.org/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               API
             </a>
