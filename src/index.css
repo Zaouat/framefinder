@@ -148,3 +148,85 @@ body {
 .animate-fadeIn {
     animation: fadeIn 0.5s ease-out;
 }
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.request-loader {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    background: #ffffff11;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
+}
+
+.request-loader button {
+    position: relative;
+    z-index: 1;
+}
+
+.request-loader::after,
+.request-loader::before {
+    content: '';
+    opacity: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: 0;
+    bottom: 0;
+    height: calc(100% + 16px);
+    width: calc(100% + 16px);
+    border: 8px solid rgba(0, 0, 0, 0.2);
+    border-radius: 100%;
+    animation-name: ripple;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(.65, 0, .34, 1);
+}
+
+.request-loader::after {
+    animation-delay: 0s;
+}
+
+.request-loader::before {
+    animation-delay: 0.5s;
+}
+
+@keyframes ripple {
+    0% {
+        opacity: 1;
+        transform: scale3d(0.75, 0.75, 1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale3d(1.5, 1.5, 1);
+    }
+}
