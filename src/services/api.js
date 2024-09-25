@@ -1,19 +1,19 @@
 import axios from "axios";
 
-const API_KEY = "eb5d83a1";
-const BASE_URL = "https://www.omdbapi.com/";
-const POSTER_BASE_URL = "http://img.omdbapi.com/";
+const API_KEY = "3a8c9699d87d6710fe86a459f2abb7aa"; // Replace with your TMDB API key
+const BASE_URL = "https://api.themoviedb.org/3";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 const api = axios.create({
   baseURL: BASE_URL,
   params: {
-    apikey: API_KEY,
+    api_key: API_KEY,
   },
 });
 
-const fetchFromAPI = async (params) => {
+const fetchFromAPI = async (endpoint, params = {}) => {
   try {
-    const response = await api.get("", { params });
+    const response = await api.get(endpoint, { params });
     return response.data;
   } catch (error) {
     console.error("Error fetching data: ", error);
@@ -21,34 +21,35 @@ const fetchFromAPI = async (params) => {
   }
 };
 
-export const searchMovies = async (query, page = 1, type = "") => {
+export const searchMovies = async (query, page = 1, type = "movie") => {
   try {
-    const lowercaseQuery = query.toLowerCase();
-    let result = await fetchFromAPI({ s: lowercaseQuery, page, type });
+    const result = await fetchFromAPI("/search/multi", {
+      query,
+      page,
+      include_adult: false,
+    });
 
-    if (result.Response === "False" && lowercaseQuery.length > 3) {
-      result = await fetchFromAPI({ s: lowercaseQuery + "*", page, type });
-    }
-
-    if (result.Response === "False" && lowercaseQuery.length > 3) {
-      result = await fetchFromAPI({
-        s: "*" + lowercaseQuery + "*",
-        page,
-        type,
-      });
-    }
-
-    if (result.Response === "True" && result.Search) {
-      const detailedMovies = await Promise.all(
-        result.Search.map(async (movie) => {
-          const details = await getMovieDetails(movie.imdbID);
-          return { ...movie, ...details };
+    if (result.results) {
+      const filteredResults = result.results.filter(
+        (item) => item.media_type === type
+      );
+      const detailedResults = await Promise.all(
+        filteredResults.map(async (item) => {
+          const details = await getMovieDetails(item.id, type);
+          return { ...item, ...details };
         })
       );
-      result.Search = detailedMovies;
+      return {
+        Response: "True",
+        Search: detailedResults,
+        totalResults: result.total_results,
+      };
     }
 
-    return result;
+    return {
+      Response: "False",
+      Error: "No results found",
+    };
   } catch (error) {
     console.error("Error searching movies:", error);
     return {
@@ -58,77 +59,101 @@ export const searchMovies = async (query, page = 1, type = "") => {
   }
 };
 
-export const getMovieDetails = async (imdbID, plot = "short") => {
-  return fetchFromAPI({ i: imdbID, plot });
+export const getMovieDetails = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/movie/${id}`, {
+      params: {
+        api_key: API_KEY,
+        append_to_response: "credits,videos",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    throw error;
+  }
 };
 
-export const searchByTitle = async (title, year = "", type = "") => {
-  return fetchFromAPI({ t: title, y: year, type });
+export const searchByTitle = async (title, year = "", type = "movie") => {
+  const result = await searchMovies(title, 1, type);
+  if (result.Response === "True" && result.Search.length > 0) {
+    const movie = result.Search[0];
+    if (year && movie.release_date && movie.release_date.startsWith(year)) {
+      return movie;
+    }
+    return movie;
+  }
+  return { Response: "False", Error: "Movie not found!" };
 };
 
-export const getSeasonEpisodes = async (imdbID, season) => {
-  return fetchFromAPI({ i: imdbID, Season: season });
+export const getSeasonEpisodes = async (tvId, season) => {
+  return fetchFromAPI(`/tv/${tvId}/season/${season}`);
 };
 
-export const getEpisodeDetails = async (imdbID, season, episode) => {
-  return fetchFromAPI({ i: imdbID, Season: season, Episode: episode });
+export const getEpisodeDetails = async (tvId, season, episode) => {
+  return fetchFromAPI(`/tv/${tvId}/season/${season}/episode/${episode}`);
 };
 
-export const getPosterUrl = (imdbID) => {
-  return `${POSTER_BASE_URL}?apikey=${API_KEY}&i=${imdbID}`;
+export const getPosterUrl = (posterPath) => {
+  return posterPath ? `${IMAGE_BASE_URL}${posterPath}` : null;
 };
 
 export const advancedSearch = async (params) => {
-  return fetchFromAPI(params);
+  return fetchFromAPI("/discover/movie", params);
 };
+
 export const getMovieNotifications = async () => {
   try {
     const count = Math.floor(Math.random() * 5) + 3; // Random count between 3 and 7
     const page = Math.floor(Math.random() * 5) + 1; // Random page between 1 and 5
-    const popularMovies = await searchMovies("popular", page, "movie");
+    const popularMovies = await fetchFromAPI("/movie/popular", { page });
 
-    const shuffledMovies = popularMovies.Search.sort(() => 0.5 - Math.random());
+    const shuffledMovies = popularMovies.results.sort(
+      () => 0.5 - Math.random()
+    );
     const selectedMovies = shuffledMovies.slice(0, count);
 
     const notifications = selectedMovies.map((movie) => {
       const notificationTypes = [
-        `New review for "${movie.Title}"`,
-        `"${movie.Title}" is now available for streaming`,
-        `Behind the scenes: "${movie.Title}"`,
-        `Cast interview: "${movie.Title}"`,
-        `Box office update: "${movie.Title}"`,
-        `Fan theories about "${movie.Title}"`,
-        `Director's cut of "${movie.Title}" announced`,
-        `Sequel rumors for "${movie.Title}"`,
-        `"${movie.Title}" added to award season predictions`,
+        `New review for "${movie.title}"`,
+        `"${movie.title}" is now available for streaming`,
+        `Behind the scenes: "${movie.title}"`,
+        `Cast interview: "${movie.title}"`,
+        `Box office update: "${movie.title}"`,
+        `Fan theories about "${movie.title}"`,
+        `Director's cut of "${movie.title}" announced`,
+        `Sequel rumors for "${movie.title}"`,
+        `"${movie.title}" added to award season predictions`,
       ];
 
       const randomContent = [
-        `Check out the latest updates for ${movie.Title} (${movie.Year})`,
-        `Don't miss the buzz around ${movie.Title}!`,
-        `Exciting news about ${movie.Title} just dropped!`,
-        `Fans are talking about ${movie.Title}. Here's why!`,
-        `${movie.Title} is making waves in the film industry`,
+        `Check out the latest updates for ${movie.title} (${new Date(
+          movie.release_date
+        ).getFullYear()})`,
+        `Don't miss the buzz around ${movie.title}!`,
+        `Exciting news about ${movie.title} just dropped!`,
+        `Fans are talking about ${movie.title}. Here's why!`,
+        `${movie.title} is making waves in the film industry`,
       ];
 
       return {
-        id: movie.imdbID,
+        id: movie.id,
         title:
           notificationTypes[
             Math.floor(Math.random() * notificationTypes.length)
           ],
         content:
           randomContent[Math.floor(Math.random() * randomContent.length)],
-        poster: movie.Poster,
+        poster: getPosterUrl(movie.poster_path),
         timestamp: new Date(
           Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)
-        ).toISOString(), // Random timestamp within the last week
+        ).toISOString(),
       };
     });
 
     return notifications.sort(
       (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-    ); // Sort by timestamp, most recent first
+    );
   } catch (error) {
     console.error("Error generating movie notifications:", error);
     return [];
