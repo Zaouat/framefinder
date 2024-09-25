@@ -8,7 +8,7 @@ const SearchBar = ({ onSearch }) => {
 
   const debouncedSearch = useCallback(
     debounce((searchTerm) => {
-      onSearch(searchTerm.toLowerCase());
+      onSearch(searchTerm.trim().toLowerCase());
     }, 300),
     [onSearch]
   );
@@ -31,7 +31,7 @@ const SearchBar = ({ onSearch }) => {
           type="text"
           value={query}
           onChange={handleChange}
-          placeholder="What do you want to watch?"
+          placeholder="Search for movies or TV shows"
           className="input input-bordered w-full font-semibold py-3 px-4 pl-12 pr-10 rounded-full bg-gray-100 bg-opacity-20 text-white placeholder-theme-adaptive focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">

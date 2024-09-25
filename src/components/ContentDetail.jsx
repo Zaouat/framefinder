@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getMovieDetails } from "../services/api";
+import { getMovieDetails, getTVShowDetails } from "../services/api";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
 import "../index.css";
@@ -8,33 +8,40 @@ import PageTransition from "./PageTransition";
 
 import { FaStar, FaCalendar, FaClock, FaPlay, FaTimes } from "react-icons/fa";
 
-const MovieDetail = () => {
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
+const ContentDetail = () => {
+  const { id, mediaType } = useParams();
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchContentDetails = async () => {
       try {
-        const details = await getMovieDetails(id);
-        setMovie(details);
+        let details;
+        if (mediaType === "movie") {
+          details = await getMovieDetails(id);
+        } else if (mediaType === "tv") {
+          details = await getTVShowDetails(id);
+        } else {
+          throw new Error("Invalid media type");
+        }
+        setContent(details);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch movie details");
+        setError(`Failed to fetch ${mediaType} details`);
         setLoading(false);
       }
     };
 
-    fetchMovieDetails();
-  }, [id]);
+    fetchContentDetails();
+  }, [id, mediaType]);
 
   if (loading) return <PageTransition />;
   if (error)
     return <div className="text-center mt-20 text-red-500">{error}</div>;
-  if (!movie)
-    return <div className="text-center mt-20">No movie details found</div>;
+  if (!content)
+    return <div className="text-center mt-20">No content details found</div>;
 
   const categoryColors = [
     "bg-blue-600",
@@ -88,13 +95,13 @@ const MovieDetail = () => {
           <FaTimes size={24} />
         </button>
         <div className="w-full h-full rounded-xl">
-          {movie?.videos?.results?.[0]?.key ? (
+          {content?.videos?.results?.[0]?.key ? (
             <iframe
-              src={`https://www.youtube.com/embed/${movie.videos.results[0].key}`}
+              src={`https://www.youtube.com/embed/${content.videos.results[0].key}`}
               frameBorder="0"
               allow="autoplay; encrypted-media"
               allowFullScreen
-              title="movie trailer"
+              title="content trailer"
               className="w-full h-full rounded-xl"
             ></iframe>
           ) : (
@@ -107,6 +114,12 @@ const MovieDetail = () => {
     </div>
   );
 
+  const title = content.title || content.name;
+  const releaseDate = content.release_date || content.first_air_date;
+  const runtime =
+    content.runtime ||
+    (content.episode_run_time && content.episode_run_time[0]);
+
   return (
     <div className="flex flex-col min-h-screen bg-theme-adaptive text-theme-adaptive">
       <NavBar isDetailPage={true} />
@@ -114,7 +127,7 @@ const MovieDetail = () => {
         <div
           className="absolute top-0 left-0 w-full h-72 bg-cover bg-center opacity-20 blur-sm"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w500${movie.backdrop_path})`,
+            backgroundImage: `url(https://image.tmdb.org/t/p/w500${content.backdrop_path})`,
           }}
         ></div>
         <div className="container mx-auto px-4 py-12 relative z-10">
@@ -122,18 +135,18 @@ const MovieDetail = () => {
             <div className="md:col-span-1">
               <img
                 src={
-                  movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                  content.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${content.poster_path}`
                     : "/placeholder.png"
                 }
-                alt={movie.title}
+                alt={title}
                 className="w-full rounded-xl shadow-2xl"
               />
             </div>
             <div className="md:col-span-2 pt-28">
               <div className="flex items-center justify-between mb-4">
-                <h1 className="text-5xl font-bold">{movie.title}</h1>
-                {movie.videos?.results?.length > 0 && (
+                <h1 className="text-5xl font-bold">{title}</h1>
+                {content.videos?.results?.length > 0 && (
                   <div className="flex flex-col items-center">
                     <div className="relative">
                       <div className="request-loader">
@@ -153,16 +166,16 @@ const MovieDetail = () => {
               </div>
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <span className="px-3 py-2 rounded-full text-sm font-bold bg-purple-600 text-white">
-                  Movie
+                  {mediaType === "movie" ? "Movie" : "TV Show"}
                 </span>
                 <div className="flex items-center">
                   <FaStar className="text-yellow-400 mr-1" />
                   <span className="font-bold">
-                    {movie.vote_average?.toFixed(1)}
+                    {content.vote_average?.toFixed(1)}
                   </span>
                 </div>
                 <a
-                  href={`https://www.themoviedb.org/movie/${movie.id}`}
+                  href={`https://www.themoviedb.org/${mediaType}/${content.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-400 hover:underline flex items-center font-bold"
@@ -171,7 +184,7 @@ const MovieDetail = () => {
                 </a>
               </div>
               <div className="mb-6">
-                {movie.genres?.map((genre, index) => (
+                {content.genres?.map((genre, index) => (
                   <span
                     key={genre.id}
                     className={`inline-block px-3 py-2 mr-2 mb-2 text-sm font-bold text-white rounded-full ${
@@ -182,27 +195,31 @@ const MovieDetail = () => {
                   </span>
                 ))}
               </div>
-              <p className="text-lg mb-6">{movie.overview}</p>
+              <p className="text-lg mb-6">{content.overview}</p>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="flex items-center">
                   <FaCalendar className="mr-2 text-gray-400" />
-                  <span className="font-bold mr-2">Release Date:</span>
-                  <span>
-                    {new Date(movie.release_date).toLocaleDateString()}
+                  <span className="font-bold mr-2">
+                    {mediaType === "movie"
+                      ? "Release Date:"
+                      : "First Air Date:"}
                   </span>
+                  <span>{new Date(releaseDate).toLocaleDateString()}</span>
                 </div>
-                <div className="flex items-center">
-                  <FaClock className="mr-2 text-gray-400" />
-                  <span className="font-bold mr-2">Duration:</span>
-                  <span>{`${Math.floor(movie.runtime / 60)}h ${
-                    movie.runtime % 60
-                  }m`}</span>
-                </div>
+                {runtime && (
+                  <div className="flex items-center">
+                    <FaClock className="mr-2 text-gray-400" />
+                    <span className="font-bold mr-2">Duration:</span>
+                    <span>{`${Math.floor(runtime / 60)}h ${
+                      runtime % 60
+                    }m`}</span>
+                  </div>
+                )}
               </div>
               <div className="mb-6">
                 <h2 className="text-2xl font-semibold mb-4">Cast</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {movie.credits?.cast
+                  {content.credits?.cast
                     ?.slice(0, 8)
                     .map((actor) =>
                       renderPersonCard(actor, actor.character || "Actor")
@@ -210,11 +227,19 @@ const MovieDetail = () => {
                 </div>
               </div>
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Director(s)</h2>
+                <h2 className="text-2xl font-semibold mb-4">
+                  {mediaType === "movie" ? "Director(s)" : "Creator(s)"}
+                </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {movie.credits?.crew
-                    ?.filter((person) => person.job === "Director")
-                    .map((director) => renderPersonCard(director, "Director"))}
+                  {mediaType === "movie"
+                    ? content.credits?.crew
+                        ?.filter((person) => person.job === "Director")
+                        .map((director) =>
+                          renderPersonCard(director, "Director")
+                        )
+                    : content.created_by?.map((creator) =>
+                        renderPersonCard(creator, "Creator")
+                      )}
                 </div>
               </div>
             </div>
@@ -227,4 +252,4 @@ const MovieDetail = () => {
   );
 };
 
-export default MovieDetail;
+export default ContentDetail;

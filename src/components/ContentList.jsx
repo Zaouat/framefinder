@@ -1,10 +1,10 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import MovieCard from "./MovieCard";
+import ContentCard from "./ContentCard";
 
-const MovieList = ({
-  movies,
-  onSelectMovie,
+const ContentList = ({
+  content,
+  onSelectContent,
   hasSearched,
   currentPage,
   totalPages,
@@ -19,13 +19,13 @@ const MovieList = ({
           className="w-32 h-32 object-contain mb-4"
         />
         <p className="text-md text-theme-adaptive font-semibold smalltext-theme-adaptive">
-          Start searching for movies to see results here.
+          Start searching for movies or TV shows to see results here.
         </p>
       </div>
     );
   }
 
-  if (hasSearched && movies.length === 0) {
+  if (hasSearched && content.length === 0) {
     return (
       <div className="flex flex-col items-center content-center justify-center h-full w-full animate-fadeIn">
         <img
@@ -34,7 +34,7 @@ const MovieList = ({
           className="w-32 h-32 object-contain mb-4"
         />
         <p className="text-md text-theme-adaptive font-semibold smalltext-theme-adaptive">
-          We couldn't find any movies matching your search.
+          We couldn't find any movies or TV shows matching your search.
         </p>
       </div>
     );
@@ -71,8 +71,12 @@ const MovieList = ({
         <h2 className="text-md font-semibold uppercase">Search Results</h2>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} onSelect={onSelectMovie} />
+        {content.map((item) => (
+          <ContentCard
+            key={item.id}
+            content={item}
+            onSelect={onSelectContent}
+          />
         ))}
       </div>
       {totalPages > 1 && renderPagination()}
@@ -80,4 +84,4 @@ const MovieList = ({
   );
 };
 
-export default MovieList;
+export default ContentList;

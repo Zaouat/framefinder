@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
-import MovieList from "./components/MovieList";
-import MovieDetail from "./components/MovieDetails";
+import ContentList from "./components/ContentList";
+import ContentDetail from "./components/ContentDetail";
 import LoadingState from "./components/LoadingState";
 import { ThemeProvider } from "./components/ThemeContext";
 
 function App() {
   const [searchState, setSearchState] = useState({
-    movies: [],
+    content: [],
     isLoading: false,
     error: null,
     hasSearched: false,
@@ -18,9 +18,12 @@ function App() {
 
   const handleSearchResults = (results) => {
     setSearchState({
-      ...results,
+      content: results.Search || [],
+      isLoading: results.isLoading,
+      error: results.Error || null,
+      hasSearched: true,
       currentPage: 1,
-      totalPages: Math.ceil(results.movies.length / 8),
+      totalPages: Math.ceil((results.Search?.length || 0) / 8),
     });
   };
 
@@ -31,10 +34,10 @@ function App() {
     }));
   };
 
-  const getPaginatedMovies = () => {
+  const getPaginatedContent = () => {
     const startIndex = (searchState.currentPage - 1) * 8;
     const endIndex = startIndex + 8;
-    return searchState.movies.slice(startIndex, endIndex);
+    return searchState.content.slice(startIndex, endIndex);
   };
 
   return (
@@ -50,8 +53,8 @@ function App() {
                   <p className="text-red-500">{searchState.error}</p>
                 )}
                 {!searchState.isLoading && !searchState.error && (
-                  <MovieList
-                    movies={getPaginatedMovies()}
+                  <ContentList
+                    content={getPaginatedContent()}
                     hasSearched={searchState.hasSearched}
                     currentPage={searchState.currentPage}
                     totalPages={searchState.totalPages}
@@ -61,7 +64,7 @@ function App() {
               </MainLayout>
             }
           />
-          <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/:mediaType/:id" element={<ContentDetail />} />
         </Routes>
       </Router>
     </ThemeProvider>

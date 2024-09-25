@@ -1,19 +1,21 @@
 import React from "react";
 import NavBar from "./Navbar";
 import SearchBar from "./SearchBar";
-import useMovieSearch from "../hooks/useMovieSearch";
+import useContentSearch from "../hooks/useContentSearch";
 import "../custom-theme.css";
 
 const Header = ({ onSearchResults }) => {
-  const { movies, isLoading, error, setSearchQuery } = useMovieSearch();
+  const { content, isLoading, error, setSearchQuery } = useContentSearch();
 
-  const handleSearch = (query) => {
+  const handleSearch = async (query) => {
     setSearchQuery(query);
+    // Wait for the content to be updated before passing it to onSearchResults
+    await new Promise((resolve) => setTimeout(resolve, 0));
     onSearchResults({
-      movies,
+      Search: content,
       isLoading,
-      error,
-      hasSearched: !!query,
+      Error: error,
+      Response: content.length > 0 ? "True" : "False",
     });
   };
 
