@@ -7,7 +7,6 @@ import { getMovieNotifications } from "../services/api";
 import "../custom-theme.css";
 
 const NavBar = ({ isDetailPage = false, isfromcategory }) => {
-  console.log(isfromcategory);
   const { theme, setTheme } = useTheme();
   const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] =
@@ -36,7 +35,7 @@ const NavBar = ({ isDetailPage = false, isfromcategory }) => {
   };
 
   return (
-    <div className="sticky top-0 py-2 z-50 mx-24">
+    <div className="sticky top-0 z-50 w-full px-4 sm:px-6 lg:px-8 py-4">
       <div className="drawer">
         <input
           id="my-menu-drawer"
@@ -55,7 +54,7 @@ const NavBar = ({ isDetailPage = false, isfromcategory }) => {
               onChange={toggleNotificationDrawer}
             />
             <div className="drawer-content">
-              <div className="navbar bg-base-100 py-2 px-8 rounded-xl">
+              <div className="navbar bg-base-100 py-2 px-4 sm:px-6 rounded-xl">
                 <div className="navbar-start">
                   {isDetailPage ? (
                     <button
@@ -64,7 +63,6 @@ const NavBar = ({ isDetailPage = false, isfromcategory }) => {
                           window.history.back();
                         } else {
                           e.preventDefault();
-
                           if (window.location.pathname === "/") {
                             window.location.reload();
                           } else {
@@ -123,8 +121,8 @@ const NavBar = ({ isDetailPage = false, isfromcategory }) => {
                       }
                     }}
                   >
-                    <h1 className="btn btn-ghost font- text-2xl text-theme-adaptive">
-                      🎬 FrameFinder.
+                    <h1 className="btn btn-ghost font-bold text-xl sm:text-2xl text-theme-adaptive">
+                      🎬 FrameFinder
                     </h1>
                   </a>
                 </div>

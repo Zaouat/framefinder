@@ -1,4 +1,3 @@
-// components/CategoryPage.jsx
 import React from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "./Navbar";
@@ -39,11 +38,11 @@ const CategoryPage = () => {
     }
 
     return (
-      <div className="join mt-8">
+      <div className="join mt-8 flex flex-wrap justify-center">
         {pageNumbers.map((number, index) => (
           <button
             key={index}
-            className={`join-item btn ${
+            className={`join-item btn btn-sm sm:btn-md ${
               currentPage === number ? "btn-active" : ""
             } ${number === "..." ? "btn-disabled" : ""}`}
             onClick={() => number !== "..." && handlePageChange(number)}
@@ -58,8 +57,8 @@ const CategoryPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar isDetailPage={true} />
-      <main className="flex-grow container mx-auto px-4 py-8 px-32">
-        <h1 className="text-3xl font-bold mb-6 capitalize">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 capitalize">
           {category} Category
         </h1>
         {isLoading && <PageTransition />}
