@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="footer text-theme-adaptive p-4 gradient-theme-adaptive-footer">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="w-full flex flex-col sm:flex-row justify-between items-start">
           <aside className="flex flex-col items-center sm:items-start mb-8 sm:mb-0">
             <div className="navbar-center">
@@ -23,7 +23,7 @@ const Footer = () => {
                 🎬 FrameFinder.
               </a>
             </div>
-            <p className="text-center sm:text-left mt-2 mb-2 text-sm sm:text-base font-semibold sm:pl-4">
+            <p className="text-center sm:text-left mt-2 mb-2 text-sm font-semibold sm:pl-4">
               FrameFinder © 2024 | Crafted with ❤️ by{" "}
               <a
                 href="https://github.com/zaouat"
@@ -37,7 +37,7 @@ const Footer = () => {
           </aside>
 
           <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
-            <nav className="flex flex-wrap justify-center sm:justify-end items-center gap-4 sm:gap-6 mb-4 sm:mb-8">
+            <nav className="flex flex-wrap justify-center sm:justify-end items-center gap-2 sm:gap-6 mb-4 sm:mb-8  pr-4">
               <Link
                 to="/about"
                 className="link link-hover font-semibold smalltext-theme-adaptive"

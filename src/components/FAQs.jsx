@@ -6,7 +6,7 @@ const FAQs = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar isDetailPage={true} />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mt-8 sm:mt-12 mb-4">
           Frequently Asked Questions
         </h1>
@@ -18,9 +18,9 @@ const FAQs = () => {
         <div className="space-y-4 px-2 sm:px-8 md:px-16 lg:px-32 mb-12">
           <div className="collapse collapse-plus bg-base-200">
             <input type="radio" name="my-accordion-3" defaultChecked />
-            <div className="collapse-title text-lg sm:text-xl font-bold">
+            <h1 className="collapse-title text-lg sm:text-xl font-bold">
               What is FrameFinder?
-            </div>
+            </h1>
             <div className="collapse-content">
               <p className="text-sm sm:text-base">
                 FrameFinder is a movie recommendation platform that helps you
@@ -33,9 +33,9 @@ const FAQs = () => {
 
           <div className="collapse collapse-plus bg-base-200">
             <input type="radio" name="my-accordion-3" />
-            <div className="collapse-title text-lg sm:text-xl font-bold">
+            <h1 className="collapse-title text-lg sm:text-xl font-bold">
               How does FrameFinder's recommendation system work?
-            </div>
+            </h1>
             <div className="collapse-content">
               <p className="text-sm sm:text-base">
                 Our recommendation system analyzes your viewing history,
@@ -48,9 +48,9 @@ const FAQs = () => {
 
           <div className="collapse collapse-plus bg-base-200">
             <input type="radio" name="my-accordion-3" />
-            <div className="collapse-title text-lg sm:text-xl font-bold">
+            <h1 className="collapse-title text-lg sm:text-xl font-bold">
               Is FrameFinder free to use?
-            </div>
+            </h1>
             <div className="collapse-content">
               <p className="text-sm sm:text-base">
                 Yes, FrameFinder is completely free to use. You can browse movie
@@ -63,9 +63,9 @@ const FAQs = () => {
 
           <div className="collapse collapse-plus bg-base-200">
             <input type="radio" name="my-accordion-3" />
-            <div className="collapse-title text-lg sm:text-xl font-bold">
+            <h1 className="collapse-title text-lg sm:text-xl font-bold">
               Can I watch movies directly on FrameFinder?
-            </div>
+            </h1>
             <div className="collapse-content">
               <p className="text-sm sm:text-base">
                 FrameFinder is a recommendation platform, not a streaming
@@ -78,9 +78,9 @@ const FAQs = () => {
 
           <div className="collapse collapse-plus bg-base-200">
             <input type="radio" name="my-accordion-3" />
-            <div className="collapse-title text-lg sm:text-xl font-bold">
+            <h1 className="collapse-title text-lg sm:text-xl font-bold">
               How can I improve my movie recommendations?
-            </div>
+            </h1>
             <div className="collapse-content">
               <p className="text-sm sm:text-base">
                 To get better recommendations, make sure to rate movies you've

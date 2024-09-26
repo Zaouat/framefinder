@@ -26,7 +26,9 @@ const ContentDetail = () => {
   const location = useLocation();
   const [isFromCategory, setIsFromCategory] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-
+  const [currentTheme, setCurrentTheme] = useState(
+    document.documentElement.getAttribute("data-theme")
+  );
   useEffect(() => {
     const fetchContentDetails = async () => {
       try {
@@ -58,6 +60,20 @@ const ContentDetail = () => {
     setIsFromCategory(location.state?.fromCategory || false);
 
     fetchContentDetails();
+
+    const handleThemeChange = () => {
+      setCurrentTheme(document.documentElement.getAttribute("data-theme"));
+    };
+
+    // Listen for attribute changes on the documentElement
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => {
+      observer.disconnect(); // Cleanup the observer on unmount
+    };
   }, [id, mediaType, location]);
 
   const toggleFavorite = () => {
@@ -175,10 +191,15 @@ const ContentDetail = () => {
         <div
           className="absolute top-0 left-0 w-full h-72 bg-cover bg-center opacity-20 blur-xs"
           style={{
-            backgroundImage: `linear-gradient(to top, #121c22, rgba(0, 0, 0, 0)), url(https://image.tmdb.org/t/p/w500${content.backdrop_path})`,
+            backgroundImage: `linear-gradient(to top, ${
+              currentTheme === "sunset" ? "#1a1a2e" : "#ffff"
+            }, rgba(0, 0, 0, 0)), url(https://image.tmdb.org/t/p/w500${
+              content.backdrop_path
+            })`,
           }}
         ></div>
-        <div className="container mx-auto px-4 sm:py-12 py-4 relative z-10">
+
+        <div className="max-w-7xl mx-auto px-4 sm:py-12 py-4 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <div className="md:col-span-1 relative">
               <img
@@ -301,7 +322,7 @@ const ContentDetail = () => {
                 )}
               <div className="mb-6">
                 <h2 className="text-xl md:text-2xl font-semibold mb-4">Cast</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
                   {content.credits?.cast
                     ?.slice(0, 8)
                     .map((actor) =>

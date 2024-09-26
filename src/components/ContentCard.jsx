@@ -29,7 +29,7 @@ const ContentCard = ({ content, isFromCategory }) => {
       state={{ fromCategory: isFromCategory, previousPath: location.pathname }}
       className="block"
     >
-      <div className="relative aspect-[2/3] rounded-lg overflow-hidden cursor-pointer group">
+      <div className="relative aspect-[2/3] rounded-2xl overflow-hidden cursor-pointer group">
         <img
           src={posterPath}
           alt={title}

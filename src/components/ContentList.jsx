@@ -67,14 +67,14 @@ const ContentList = ({
   };
 
   return (
-    <div className="animate-fadeIn px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+    <div className="animate-fadeIn container mx-auto px-4 sm:px-6 lg:px-8 mb-8 max-w-7xl">
       <div className="flex items-center mb-4 text-gray-400">
         <FaSearch className="mr-2" size={14} />
         <h2 className="text-sm sm:text-md font-semibold uppercase">
           Search Results
         </h2>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6 ">
         {content.map((item) => (
           <ContentCard
             key={item.id}

@@ -77,7 +77,7 @@ const MyFavorites = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar isDetailPage={true} />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-18 mb-32 mt-16 sm:mt-10">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-18 mb-32 mt-16 sm:mt-10 max-w-7xl">
         <h1 className="text-3xl sm:text-4xl font-bold mb-8 ">My Favorites</h1>
         {isLoading && <PageTransition />}
         {!isLoading && favorites.length === 0 && (

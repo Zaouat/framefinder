@@ -9,7 +9,7 @@ const AboutMe = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar isDetailPage={true} />
-      <main className="flex-grow container mx-auto px-4 py-8 sm:py-16 sm:px-6 lg:px-8">
+      <main className="flex-grow container mx-auto px-4 py-8 sm:py-16 sm:px-6 lg:px-8 max-w-7xl">
         <div className="flex flex-col lg:flex-row items-start space-y-8 lg:space-y-0 lg:space-x-12 mb-12 max-w-6xl mx-auto">
           <div className="w-full lg:w-1/2">
             <img
