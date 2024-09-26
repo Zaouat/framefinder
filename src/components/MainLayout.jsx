@@ -6,9 +6,7 @@ const MainLayout = ({ children, onSearchResults }) => {
   return (
     <div className="flex flex-col min-h-screen bg-theme-adaptive">
       <Header onSearchResults={onSearchResults} />
-      <main className="flex-grow container mx-auto px-4 pb-12 pt-6">
-        {children}
-      </main>
+      <main className="flex-grow container mx-auto px-4 pb-12">{children}</main>
       <div className="divider"></div>
       <Footer />
     </div>

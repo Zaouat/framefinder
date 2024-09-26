@@ -126,11 +126,11 @@ const ContentDetail = () => {
 
   const TrailerModal = () => (
     <div
-      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
       onClick={() => setShowTrailer(false)}
     >
       <div
-        className="relative w-4/5 md:w-2/3 lg:w-1/2 aspect-video rounded-xl"
+        className="relative w-full max-w-4xl aspect-video rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -171,15 +171,15 @@ const ContentDetail = () => {
         isDetailPage={true}
         isfromcategory={location.state?.fromCategory}
       />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow sm:pt-20 pt-0">
         <div
-          className="absolute top-0 left-0 w-full h-72 bg-cover bg-center opacity-20 blur-sm"
+          className="absolute top-0 left-0 w-full h-72 bg-cover bg-center opacity-20 blur-xs"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w500${content.backdrop_path})`,
+            backgroundImage: `linear-gradient(to top, #121c22, rgba(0, 0, 0, 0)), url(https://image.tmdb.org/t/p/w500${content.backdrop_path})`,
           }}
         ></div>
-        <div className="container mx-auto px-4 py-12 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="container mx-auto px-4 sm:py-12 py-4 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <div className="md:col-span-1 relative">
               <img
                 src={
@@ -210,10 +210,14 @@ const ContentDetail = () => {
                 </div>
               )}
             </div>
-            <div className="md:col-span-2 pt-28">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-5xl font-bold">{title}</h1>
-                <div className="flex items-center">
+            <div className="md:col-span-2 sm:pt-8 pt-0 md:pt-28">
+              <div className="relative mb-4 pr-16">
+                <div className="max-w-full">
+                  <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold break-words pr-2">
+                    {title}
+                  </h1>
+                </div>
+                <div className="absolute top-0 right-0">
                   <button
                     onClick={toggleFavorite}
                     className={`btn btn-ghost btn-circle btn-lg ${
@@ -255,8 +259,8 @@ const ContentDetail = () => {
                   </span>
                 ))}
               </div>
-              <p className="text-lg mb-6">{content.overview}</p>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <p className="text-base md:text-lg mb-6">{content.overview}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div className="flex items-center">
                   <FaCalendar className="mr-2 text-gray-400" />
                   <span className="font-bold mr-2">
@@ -296,8 +300,8 @@ const ContentDetail = () => {
                   </div>
                 )}
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Cast</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <h2 className="text-xl md:text-2xl font-semibold mb-4">Cast</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {content.credits?.cast
                     ?.slice(0, 8)
                     .map((actor) =>
@@ -306,10 +310,10 @@ const ContentDetail = () => {
                 </div>
               </div>
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-4">
+                <h2 className="text-xl md:text-2xl font-semibold mb-4">
                   {mediaType === "movie" ? "Director(s)" : "Creator(s)"}
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {mediaType === "movie"
                     ? content.credits?.crew
                         ?.filter((person) => person.job === "Director")

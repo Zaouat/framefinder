@@ -35,7 +35,7 @@ const Header = ({ onSearchResults }) => {
 
         <div className="absolute inset-x-0 bottom-0 h-full gradient-theme-adaptive"></div>
 
-        <div className="relative z-10 hero-content text-neutral-content text-center flex flex-col items-center justify-center h-full">
+        <div className="relative z-10 hero-content pb-0 text-neutral-content text-center flex flex-col items-center justify-center h-full">
           <div className="max-w-3xl">
             <h1 className="mb-4 text-6xl font-bold text-white">
               What would you like to watch this afternoon?

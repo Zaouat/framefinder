@@ -57,6 +57,8 @@
         background-repeat: no-repeat;
     }
 
+
+
     .gradient-theme-adaptive-footer {
         @apply bg-gradient-to-t from-gray-100 to-white;
         background-size: 100% 100%;
