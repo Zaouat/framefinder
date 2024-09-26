@@ -8,6 +8,7 @@ import { ThemeProvider } from "./components/ThemeContext";
 import AboutMe from "./components/AboutMe";
 import CategoryPage from "./components/CategoryPage";
 import FAQs from "./components/FAQs";
+import MyFavorites from "./components/MyFavorites";
 
 function App() {
   const [searchState, setSearchState] = useState({
@@ -71,6 +72,7 @@ function App() {
           <Route path="/about" element={<AboutMe />} />
           <Route path="/category/:category" element={<CategoryPage />} />{" "}
           <Route path="/faqs" element={<FAQs />} />
+          <Route path="/favorites" element={<MyFavorites />} />
           {/* Add this new route */}
         </Routes>
       </Router>

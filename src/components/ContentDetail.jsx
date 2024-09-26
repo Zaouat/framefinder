@@ -13,6 +13,7 @@ import {
   FaTimes,
   FaListUl,
   FaTv,
+  FaHeart,
 } from "react-icons/fa";
 
 const ContentDetail = () => {
@@ -24,6 +25,7 @@ const ContentDetail = () => {
   const [selectedSeason, setSelectedSeason] = useState(1);
   const location = useLocation();
   const [isFromCategory, setIsFromCategory] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchContentDetails = async () => {
@@ -38,17 +40,47 @@ const ContentDetail = () => {
         }
         setContent(details);
         setLoading(false);
+
+        // Check if the content is in favorites
+        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        setIsFavorite(
+          favorites.some(
+            (item) => item.id === details.id && item.mediaType === mediaType
+          )
+        );
       } catch (err) {
         setError(`Failed to fetch ${mediaType} details`);
         setLoading(false);
       }
     };
 
-    // // Check if the page was loaded from a category
+    // Check if the page was loaded from a category
     setIsFromCategory(location.state?.fromCategory || false);
 
     fetchContentDetails();
   }, [id, mediaType, location]);
+
+  const toggleFavorite = () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const contentToSave = {
+      id: content.id,
+      title: content.title || content.name,
+      posterPath: content.poster_path,
+      mediaType: mediaType,
+    };
+
+    if (isFavorite) {
+      const updatedFavorites = favorites.filter(
+        (item) => !(item.id === content.id && item.mediaType === mediaType)
+      );
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    } else {
+      favorites.push(contentToSave);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+
+    setIsFavorite(!isFavorite);
+  };
 
   if (loading) return <PageTransition />;
   if (error)
@@ -148,7 +180,7 @@ const ContentDetail = () => {
         ></div>
         <div className="container mx-auto px-4 py-12 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="md:col-span-1">
+            <div className="md:col-span-1 relative">
               <img
                 src={
                   content.poster_path
@@ -158,27 +190,39 @@ const ContentDetail = () => {
                 alt={title}
                 className="w-full rounded-xl shadow-2xl"
               />
+              {content.videos?.results?.length > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="flex flex-col items-center">
+                    <div className="relative mb-2">
+                      <div className="request-loader">
+                        <button
+                          onClick={() => setShowTrailer(true)}
+                          className="btn btn-ghost btn-circle btn-lg group bg-black bg-opacity-50 hover:bg-opacity-75 transition duration-300"
+                        >
+                          <FaPlay className="text-xl text-white" />
+                        </button>
+                      </div>
+                    </div>
+                    <span className="text-sm font-bold text-white bg-black bg-opacity-50 px-4 py-2 rounded">
+                      Watch Trailer
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="md:col-span-2 pt-28">
               <div className="flex items-center justify-between mb-4">
                 <h1 className="text-5xl font-bold">{title}</h1>
-                {content.videos?.results?.length > 0 && (
-                  <div className="flex flex-col items-center">
-                    <div className="relative">
-                      <div className="request-loader">
-                        <button
-                          onClick={() => setShowTrailer(true)}
-                          className="btn btn-ghost btn-circle btn-lg group"
-                        >
-                          <FaPlay className="text-xl" />
-                        </button>
-                      </div>
-                    </div>
-                    <span className="mt-2 text-sm font-bold">
-                      Watch Trailer
-                    </span>
-                  </div>
-                )}
+                <div className="flex items-center">
+                  <button
+                    onClick={toggleFavorite}
+                    className={`btn btn-ghost btn-circle btn-lg ${
+                      isFavorite ? "text-red-500" : "text-gray-400"
+                    }`}
+                  >
+                    <FaHeart className="text-2xl" />
+                  </button>
+                </div>
               </div>
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <span className="px-3 py-2 rounded-full text-sm font-bold bg-purple-600 text-white">
