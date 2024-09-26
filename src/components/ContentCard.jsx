@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const ContentCard = ({ content, isFromCategory }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const location = useLocation();
 
   const posterPath = content.poster_path
     ? `https://image.tmdb.org/t/p/w500${content.poster_path}`
     : "/placeholder.png";
 
-  const title = content.title || content.name;
+  const title = content.title || content.name || "Unknown Title";
   const releaseDate = content.release_date || content.first_air_date;
-  const mediaType = content.media_type;
+  const mediaType = content.media_type || "unknown";
   const linkTo = `/${mediaType}/${content.id}`;
 
   useEffect(() => {

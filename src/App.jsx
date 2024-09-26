@@ -9,6 +9,7 @@ import AboutMe from "./components/AboutMe";
 import CategoryPage from "./components/CategoryPage";
 import FAQs from "./components/FAQs";
 import MyFavorites from "./components/MyFavorites";
+import { searchMultiWithFilters } from "./services/api";
 
 function App() {
   const [searchState, setSearchState] = useState({
@@ -20,15 +21,22 @@ function App() {
     totalPages: 1,
   });
 
+  const [filters, setFilters] = useState({
+    mediaType: "",
+    genre: "",
+    sortBy: "popularity.desc",
+    rating: "",
+  });
+
   const handleSearchResults = (results) => {
-    setSearchState({
+    setSearchState((prevState) => ({
+      ...prevState,
       content: results.Search || [],
-      isLoading: results.isLoading,
+      isLoading: false,
       error: results.Error || null,
       hasSearched: true,
-      currentPage: 1,
-      totalPages: Math.ceil((results.Search?.length || 0) / 8),
-    });
+      totalPages: Math.ceil((results.totalResults || 0) / 8),
+    }));
   };
 
   const handlePageChange = (newPage) => {
@@ -36,12 +44,51 @@ function App() {
       ...prevState,
       currentPage: newPage,
     }));
+    performSearchWithFilters(newPage);
   };
 
   const getPaginatedContent = () => {
     const startIndex = (searchState.currentPage - 1) * 8;
     const endIndex = startIndex + 8;
     return searchState.content.slice(startIndex, endIndex);
+  };
+
+  const handleFilterChange = (newFilters) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
+    performSearchWithFilters();
+  };
+
+  const performSearchWithFilters = async (page = 1) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      isLoading: true,
+      error: null,
+    }));
+
+    try {
+      const results = await searchMultiWithFilters("", filters, page);
+      handleSearchResults(results);
+    } catch (error) {
+      setSearchState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        error: "An error occurred while searching",
+      }));
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchState({
+      content: [],
+      isLoading: false,
+      error: null,
+      hasSearched: false,
+      currentPage: 1,
+      totalPages: 1,
+    });
   };
 
   return (
@@ -51,7 +98,11 @@ function App() {
           <Route
             path="/"
             element={
-              <MainLayout onSearchResults={handleSearchResults}>
+              <MainLayout
+                onSearchResults={handleSearchResults}
+                onFilterChange={handleFilterChange}
+                onClearSearch={handleClearSearch}
+              >
                 {searchState.isLoading && <LoadingState />}
                 {searchState.error && (
                   <p className="text-red-500">{searchState.error}</p>
@@ -70,10 +121,9 @@ function App() {
           />
           <Route path="/:mediaType/:id" element={<ContentDetail />} />
           <Route path="/about" element={<AboutMe />} />
-          <Route path="/category/:category" element={<CategoryPage />} />{" "}
+          <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/favorites" element={<MyFavorites />} />
-          {/* Add this new route */}
         </Routes>
       </Router>
     </ThemeProvider>

@@ -2,15 +2,14 @@ import React from "react";
 import NavBar from "./Navbar";
 import SearchBar from "./SearchBar";
 import useContentSearch from "../hooks/useContentSearch";
-import "../custom-theme.css";
+import Filter from "./Filter";
 
-const Header = ({ onSearchResults }) => {
-  const { content, isLoading, error, setSearchQuery } = useContentSearch();
+const Header = ({ onSearchResults, onFilterChange, onClearSearch }) => {
+  const { content, isLoading, error, setSearchQuery, setFilters } =
+    useContentSearch();
 
-  const handleSearch = async (query) => {
+  const handleSearch = (query) => {
     setSearchQuery(query);
-    // Wait for the content to be updated before passing it to onSearchResults
-    await new Promise((resolve) => setTimeout(resolve, 0));
     onSearchResults({
       Search: content,
       isLoading,
@@ -19,10 +18,18 @@ const Header = ({ onSearchResults }) => {
     });
   };
 
+  const handleFilterChange = (newFilters) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
+    onFilterChange(newFilters);
+  };
+
   return (
-    <header className="bg-theme-adaptive border-b-0">
+    <header className="bg-theme-adaptive border-b-0 ">
       <NavBar isDetailPage={false} />
-      <div className="hero h-[80vh] relative overflow-hidden">
+      <div className="hero h-[90vh] sm:h-[80vh] relative overflow-hidden">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover"
           autoPlay
@@ -32,9 +39,7 @@ const Header = ({ onSearchResults }) => {
           <source src="/video-bg.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-
         <div className="absolute inset-x-0 bottom-0 h-full gradient-theme-adaptive"></div>
-
         <div className="relative z-10 hero-content pb-0 text-neutral-content text-center flex flex-col items-center justify-center h-full">
           <div className="max-w-3xl">
             <h1 className="mb-4 text-6xl font-bold text-white">
@@ -43,7 +48,8 @@ const Header = ({ onSearchResults }) => {
             <p className="mb-8 text-md text-white">
               Your ultimate movie and TV show search engine.
             </p>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} onClear={onClearSearch} />
+            <Filter onFilterChange={handleFilterChange} />
           </div>
         </div>
       </div>

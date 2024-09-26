@@ -21,13 +21,31 @@ const fetchFromAPI = async (endpoint, params = {}) => {
   }
 };
 
-export const searchMulti = async (query, page = 1) => {
+export const searchMultiWithFilters = async (query, filters, page = 1) => {
   try {
-    const result = await fetchFromAPI("/search/multi", {
-      query,
+    const params = {
       page,
       include_adult: false,
-    });
+      sort_by: filters.sortBy,
+    };
+
+    if (query) {
+      params.query = query;
+      // Only apply these filters if there's a search query
+      params.with_genres = filters.genre;
+      params["vote_average.gte"] = filters.rating;
+      params.year = filters.year;
+    }
+
+    let endpoint = "/search/multi";
+
+    if (filters.mediaType === "movie") {
+      endpoint = query ? "/search/movie" : "/discover/movie";
+    } else if (filters.mediaType === "tv") {
+      endpoint = query ? "/search/tv" : "/discover/tv";
+    }
+
+    const result = await fetchFromAPI(endpoint, params);
 
     if (result.results) {
       const detailedResults = await Promise.all(
@@ -61,9 +79,8 @@ export const searchMulti = async (query, page = 1) => {
 
 export const getDetails = async (id, type) => {
   try {
-    const response = await axios.get(`${BASE_URL}/${type}/${id}`, {
+    const response = await api.get(`/${type}/${id}`, {
       params: {
-        api_key: API_KEY,
         append_to_response: "credits,videos",
       },
     });
@@ -73,6 +90,58 @@ export const getDetails = async (id, type) => {
     throw error;
   }
 };
+// export const searchMulti = async (query, page = 1) => {
+//   try {
+//     const result = await fetchFromAPI("/search/multi", {
+//       query,
+//       page,
+//       include_adult: false,
+//     });
+
+//     if (result.results) {
+//       const detailedResults = await Promise.all(
+//         result.results.map(async (item) => {
+//           if (item.media_type === "movie" || item.media_type === "tv") {
+//             const details = await getDetails(item.id, item.media_type);
+//             return { ...item, ...details };
+//           }
+//           return item;
+//         })
+//       );
+//       return {
+//         Response: "True",
+//         Search: detailedResults,
+//         totalResults: result.total_results,
+//       };
+//     }
+
+//     return {
+//       Response: "False",
+//       Error: "No results found",
+//     };
+//   } catch (error) {
+//     console.error("Error searching:", error);
+//     return {
+//       Response: "False",
+//       Error: "An error occurred while searching",
+//     };
+//   }
+// };
+
+// export const getDetails = async (id, type) => {
+//   try {
+//     const response = await axios.get(`${BASE_URL}/${type}/${id}`, {
+//       params: {
+//         api_key: API_KEY,
+//         append_to_response: "credits,videos",
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error(`Error fetching ${type} details:`, error);
+//     throw error;
+//   }
+// };
 
 export const getMovieDetails = async (id) => {
   try {
@@ -97,8 +166,36 @@ export const getTVShowDetails = async (id) => {
     throw error;
   }
 };
+// export const searchByTitle = async (title, year = "", type = "movie") => {
+//   const result = await searchMulti(title);
+//   if (result.Response === "True" && result.Search.length > 0) {
+//     const item = result.Search.find((i) => i.media_type === type);
+//     if (item) {
+//       if (year) {
+//         const releaseDate =
+//           type === "movie" ? item.release_date : item.first_air_date;
+//         if (releaseDate && releaseDate.startsWith(year)) {
+//           return item;
+//         }
+//       } else {
+//         return item;
+//       }
+//     }
+//   }
+//   return {
+//     Response: "False",
+//     Error: `${type.charAt(0).toUpperCase() + type.slice(1)} not found!`,
+//   };
+// };
 export const searchByTitle = async (title, year = "", type = "movie") => {
-  const result = await searchMulti(title);
+  const filters = {
+    mediaType: type,
+    genre: "", // Add genre if needed
+    year,
+    sortBy: "vote_average.desc",
+  };
+
+  const result = await searchMultiWithFilters(title, filters);
   if (result.Response === "True" && result.Search.length > 0) {
     const item = result.Search.find((i) => i.media_type === type);
     if (item) {
@@ -113,12 +210,12 @@ export const searchByTitle = async (title, year = "", type = "movie") => {
       }
     }
   }
+
   return {
     Response: "False",
     Error: `${type.charAt(0).toUpperCase() + type.slice(1)} not found!`,
   };
 };
-
 // Add this to your existing api.js file
 
 export const getCategoryContent = async (category, page = 1) => {
