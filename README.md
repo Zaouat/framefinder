@@ -40,6 +40,20 @@ or
 
 5. Open your browser and visit `http://localhost:3000`
 
+## 🔑 API Configuration
+
+FrameFinder uses [The Movie Database (TMDb) API](https://www.themoviedb.org/documentation/api) to fetch movie and TV show data. To run this project, you'll need to obtain an API key from TMDb.
+
+1. Visit [The Movie Database website](https://www.themoviedb.org/) and create an account if you don't have one.
+2. Go to your account settings and navigate to the API section.
+3. Request an API key for developer use.
+4. Once you have your API key, create a `.env` file in the root directory of the project.
+5. Add your API key to the `.env` file like this:
+   
+Replace `your_api_key_here` with your actual TMDb API key.
+
+⚠️ Important: Never commit your `.env` file to version control. It's already included in `.gitignore` to prevent accidental commits.
+
 ## 🛠️ Built With
 
 - [React](https://reactjs.org/) - UI Library
