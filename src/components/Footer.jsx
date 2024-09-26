@@ -42,6 +42,7 @@ const Footer = () => {
                 to="/about"
                 className="link link-hover font-semibold smalltext-theme-adaptive"
                 onClick={() => setTimeout(() => window.scrollTo(0, 0), 0)}
+                target="_blank"
               >
                 About Me
               </Link>
@@ -55,7 +56,7 @@ const Footer = () => {
               </a>
               <a
                 className="link link-hover font-semibold smalltext-theme-adaptive"
-                href="https://www.themoviedb.org/"
+                href="https://developer.themoviedb.org/docs/getting-started"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -70,7 +71,11 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="btn btn-ghost btn-circle btn-md group"
               >
-                <img src="/x.svg" alt="X Zaouat" />
+                <img
+                  src="/x.svg"
+                  alt="X Zaouat"
+                  className="transition-colors duration-300 group-hover:text-primary group-hover:[filter:invert(48%)_sepia(13%)_saturate(3207%)_hue-rotate(130deg)_brightness(95%)_contrast(80%)]"
+                />
               </a>
               <a
                 href="https://www.linkedin.com/in/abdellah-zaouat-17a628198"
@@ -78,7 +83,11 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="btn btn-ghost btn-circle btn-md group"
               >
-                <img src="/linkedin.svg" alt="LinkedIn Zaouat" />
+                <img
+                  src="/linkedin.svg"
+                  alt="LinkedIn Zaouat"
+                  className="transition-colors duration-300 group-hover:text-primary group-hover:[filter:invert(48%)_sepia(13%)_saturate(3207%)_hue-rotate(130deg)_brightness(95%)_contrast(80%)]"
+                />
               </a>
               <a
                 href="https://github.com/Zaouat"
@@ -86,7 +95,11 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="btn btn-ghost btn-circle btn-md group"
               >
-                <img src="/github.svg" alt="Github Zaouat" />
+                <img
+                  src="/github.svg"
+                  alt="Github Zaouat"
+                  className="transition-colors duration-300 group-hover:text-primary group-hover:[filter:invert(48%)_sepia(13%)_saturate(3207%)_hue-rotate(130deg)_brightness(95%)_contrast(80%)]"
+                />
               </a>
             </div>
           </div>

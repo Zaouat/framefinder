@@ -32,7 +32,7 @@ const SearchBar = ({ onSearch }) => {
           value={query}
           onChange={handleChange}
           placeholder="Search for movies or TV shows"
-          className="input input-bordered w-full font-semibold py-3 px-4 pl-12 pr-10 rounded-full bg-gray-100 bg-opacity-20 text-white placeholder-theme-adaptive focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="input input-bordered  text-base w-full blur-xs font-bold py-3 px-4 pl-12 pr-10 rounded-full bg-gray-100 bg-opacity-20 text-white placeholder-theme-adaptive focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
           <FaSearch className="h-4 w-4 placeholder-theme-adaptive" />
