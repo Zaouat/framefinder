@@ -17,7 +17,7 @@ const Filter = ({ onFilterChange }) => {
   return (
     <div className="flex flex-wrap justify-center gap-2 mt-4 max-w-[600px] mx-auto">
       <select
-        className="select select-bordered rounded-xs w-auto min-w-[120px]"
+        className="select select-bordered rounded-xs w-auto min-w-[120px] smalltext-theme-adaptive font-semibold"
         onChange={handleMediaTypeChange}
         defaultValue=""
       >
@@ -28,7 +28,7 @@ const Filter = ({ onFilterChange }) => {
         <option value="tv">TV Show</option>
       </select>
       <select
-        className="select select-bordered rounded-xs w-auto min-w-[120px]"
+        className="select select-bordered rounded-xs w-auto min-w-[120px] smalltext-theme-adaptive font-semibold"
         onChange={handleGenreChange}
         defaultValue=""
       >
@@ -40,7 +40,7 @@ const Filter = ({ onFilterChange }) => {
         <option value="18">Drama</option>
       </select>
       <select
-        className="select select-bordered rounded-xs w-auto min-w-[120px]"
+        className="select select-bordered rounded-xs w-auto min-w-[120px] smalltext-theme-adaptive font-semibold"
         onChange={handleSortByChange}
         defaultValue="vote_average.desc"
       >
