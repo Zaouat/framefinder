@@ -16,7 +16,8 @@ const MyFavorites = () => {
       setIsLoading(true);
       const storedFavorites =
         JSON.parse(localStorage.getItem("favorites")) || [];
-      setFavorites(storedFavorites);
+      // Reverse the order of favorites
+      setFavorites(storedFavorites.reverse());
       setIsLoading(false);
     };
 
@@ -95,6 +96,7 @@ const MyFavorites = () => {
                     ...item,
                     media_type: item.mediaType,
                     poster_path: item.posterPath,
+                    vote_average: item.voteAverage,
                   }}
                   isFromCategory={true}
                 />

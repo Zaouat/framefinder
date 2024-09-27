@@ -19,38 +19,48 @@ const AboutMe = () => {
             />
           </div>
           <div className="w-full lg:w-1/2">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4 ">
               Zaouat Abdellah
             </h1>
-            <p className="text-lg sm:text-xl mb-6">
-              Passionate Full Stack Developer | Movie Enthusiast | Creator of
-              FrameFinder
-            </p>
+            <h3 className="text-lg sm:text-xl mb-6 ">
+              Frontend Flutter Developer
+            </h3>
             <div className="space-y-4 sm:space-y-6 mb-8">
               <p>
-                Hello! I'm Abdellah Zaouat, a dedicated full-stack developer
-                with a love for creating intuitive and powerful web
-                applications. My journey in the world of coding has led me to
-                develop FrameFinder, a platform born out of my passion for both
-                technology and cinema.
+                Hello! I'm Abdellah Zaouat, a passionate front-end Flutter
+                developer with a keen interest in creating intuitive and
+                efficient mobile applications. My journey in the world of
+                development has been driven by a constant desire to learn and
+                innovate.
               </p>
               <p>
-                With FrameFinder, I aimed to create a tool that not only helps
-                movie enthusiasts discover new films but also provides a
-                seamless, enjoyable experience in exploring the vast world of
-                cinema. This project showcases my skills in front-end design,
-                back-end development, and API integration, all while focusing on
-                user experience and performance.
+                My expertise lies in Flutter development, where I've created
+                various applications ranging from e-commerce platforms to
+                minimalistic music players. I'm also well-versed in front-end
+                web technologies, continuously improving my skills in ReactJs to
+                broaden my development capabilities.
               </p>
               <p>
-                When I'm not coding, you can find me exploring new technologies,
-                watching the latest films, or contributing to open-source
-                projects. I believe in the power of technology to enhance our
-                daily lives and am always excited to take on new challenges in
-                the ever-evolving landscape of web development.
+                Beyond coding, I'm fascinated by the potential of the Metaverse
+                and its implications for future digital interactions. I enjoy
+                exploring new technologies and their potential applications in
+                solving real-world problems.
+              </p>
+              <p>
+                When I'm not immersed in lines of code, you might find me
+                contributing to open-source projects, watching the latest TV
+                series, or engaging in discussions about the future of
+                technology. I'm always open to new challenges and opportunities
+                to grow as a developer.
+              </p>
+              <p>
+                Feel free to reach out if you want to discuss Flutter
+                development, front-end technologies, or if you're interested in
+                collaborating on exciting projects. Let's create something
+                amazing together!
               </p>
             </div>
-            <h3 className="mb-4 text-xl">Contact Me:</h3>
+            <h3 className="mb-4 text-xl">Connect with me:</h3>
             <div className="flex justify-start space-x-4">
               <a
                 href="https://www.linkedin.com/in/abdellah-zaouat-17a628198"
@@ -70,7 +80,7 @@ const AboutMe = () => {
                 </svg>
               </a>
               <a
-                href="https://github.com/Zaouat"
+                href="https://twitter.com/AbdellaZaouat"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-ghost btn-circle btn-md group"
@@ -80,10 +90,10 @@ const AboutMe = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  className="w-5 h-6 transition-colors duration-200 group-hover:text-primary"
+                  className="w-5 h-5 transition-colors duration-200 group-hover:text-primary"
                   viewBox="0 0 16 16"
                 >
-                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                  <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
                 </svg>
               </a>
             </div>

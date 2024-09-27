@@ -83,6 +83,7 @@ const ContentDetail = () => {
       title: content.title || content.name,
       posterPath: content.poster_path,
       mediaType: mediaType,
+      voteAverage: content.vote_average, // Add this line
     };
 
     if (isFavorite) {
