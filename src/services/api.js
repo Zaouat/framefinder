@@ -90,59 +90,6 @@ export const getDetails = async (id, type) => {
     throw error;
   }
 };
-// export const searchMulti = async (query, page = 1) => {
-//   try {
-//     const result = await fetchFromAPI("/search/multi", {
-//       query,
-//       page,
-//       include_adult: false,
-//     });
-
-//     if (result.results) {
-//       const detailedResults = await Promise.all(
-//         result.results.map(async (item) => {
-//           if (item.media_type === "movie" || item.media_type === "tv") {
-//             const details = await getDetails(item.id, item.media_type);
-//             return { ...item, ...details };
-//           }
-//           return item;
-//         })
-//       );
-//       return {
-//         Response: "True",
-//         Search: detailedResults,
-//         totalResults: result.total_results,
-//       };
-//     }
-
-//     return {
-//       Response: "False",
-//       Error: "No results found",
-//     };
-//   } catch (error) {
-//     console.error("Error searching:", error);
-//     return {
-//       Response: "False",
-//       Error: "An error occurred while searching",
-//     };
-//   }
-// };
-
-// export const getDetails = async (id, type) => {
-//   try {
-//     const response = await axios.get(`${BASE_URL}/${type}/${id}`, {
-//       params: {
-//         api_key: API_KEY,
-//         append_to_response: "credits,videos",
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error(`Error fetching ${type} details:`, error);
-//     throw error;
-//   }
-// };
-
 export const getMovieDetails = async (id) => {
   try {
     const response = await axios.get(
@@ -166,27 +113,6 @@ export const getTVShowDetails = async (id) => {
     throw error;
   }
 };
-// export const searchByTitle = async (title, year = "", type = "movie") => {
-//   const result = await searchMulti(title);
-//   if (result.Response === "True" && result.Search.length > 0) {
-//     const item = result.Search.find((i) => i.media_type === type);
-//     if (item) {
-//       if (year) {
-//         const releaseDate =
-//           type === "movie" ? item.release_date : item.first_air_date;
-//         if (releaseDate && releaseDate.startsWith(year)) {
-//           return item;
-//         }
-//       } else {
-//         return item;
-//       }
-//     }
-//   }
-//   return {
-//     Response: "False",
-//     Error: `${type.charAt(0).toUpperCase() + type.slice(1)} not found!`,
-//   };
-// };
 export const searchByTitle = async (title, year = "", type = "movie") => {
   const filters = {
     mediaType: type,
