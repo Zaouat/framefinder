@@ -74,8 +74,8 @@ const MenuDrawer = ({ onClose }) => {
           </li>
         </ul>
         <div className="mt-auto pt-4">
-          <h1 className="btn btn-ghost text-xl text-theme-adaptive w-full justify-start">
-            🎬 FrameFinder.
+          <h1 className="btn btn-ghost font-black text-lg sm:text-2xl text-theme-adaptive">
+            🎬 FrameFinder
           </h1>
         </div>
       </div>

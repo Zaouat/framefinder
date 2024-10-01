@@ -18,9 +18,10 @@ const Footer = () => {
                     window.location.href = "/";
                   }
                 }}
-                className="btn btn-ghost font-bold text-xl sm:text-2xl text-theme-adaptive"
               >
-                🎬 FrameFinder.
+                <h1 className="btn btn-ghost font-black text-lg sm:text-xl text-theme-adaptive">
+                  🎬 FrameFinder
+                </h1>
               </a>
             </div>
             <p className="text-center lg:text-left mt-2 mb-2 text-sm font-semibold lg:pl-4">

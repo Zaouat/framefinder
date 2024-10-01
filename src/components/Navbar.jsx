@@ -120,7 +120,7 @@ const NavBar = ({ isDetailPage = false, isfromcategory }) => {
                       }
                     }}
                   >
-                    <h1 className="btn btn-ghost font-bold text-lg sm:text-2xl text-theme-adaptive">
+                    <h1 className="btn btn-ghost font-black text-lg sm:text-2xl text-theme-adaptive">
                       🎬 FrameFinder
                     </h1>
                   </a>
