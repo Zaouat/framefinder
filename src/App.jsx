@@ -89,6 +89,12 @@ function App() {
       currentPage: 1,
       totalPages: 1,
     });
+    setFilters({
+      mediaType: "",
+      genre: "",
+      sortBy: "popularity.desc",
+      rating: "",
+    });
   };
 
   return (

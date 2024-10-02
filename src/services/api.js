@@ -31,18 +31,20 @@ export const searchMultiWithFilters = async (query, filters, page = 1) => {
 
     if (query) {
       params.query = query;
-      // Only apply these filters if there's a search query
       params.with_genres = filters.genre;
       params["vote_average.gte"] = filters.rating;
       params.year = filters.year;
     }
 
     let endpoint = "/search/multi";
+    let forcedMediaType = null;
 
     if (filters.mediaType === "movie") {
       endpoint = query ? "/search/movie" : "/discover/movie";
+      forcedMediaType = "movie";
     } else if (filters.mediaType === "tv") {
       endpoint = query ? "/search/tv" : "/discover/tv";
+      forcedMediaType = "tv";
     }
 
     const result = await fetchFromAPI(endpoint, params);
@@ -50,11 +52,16 @@ export const searchMultiWithFilters = async (query, filters, page = 1) => {
     if (result.results) {
       const detailedResults = await Promise.all(
         result.results.map(async (item) => {
-          if (item.media_type === "movie" || item.media_type === "tv") {
-            const details = await getDetails(item.id, item.media_type);
-            return { ...item, ...details };
-          }
-          return item;
+          const mediaType =
+            forcedMediaType ||
+            item.media_type ||
+            (item.first_air_date ? "tv" : "movie");
+          const details = await getDetails(item.id, mediaType);
+          return {
+            ...item,
+            ...details,
+            media_type: mediaType,
+          };
         })
       );
       return {
@@ -142,8 +149,6 @@ export const searchByTitle = async (title, year = "", type = "movie") => {
     Error: `${type.charAt(0).toUpperCase() + type.slice(1)} not found!`,
   };
 };
-// Add this to your existing api.js file
-
 export const getCategoryContent = async (category, page = 1) => {
   try {
     const movieResponse = await fetchFromAPI("/discover/movie", {

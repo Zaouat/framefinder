@@ -5,7 +5,7 @@ import useContentSearch from "../hooks/useContentSearch";
 import Filter from "./Filter";
 
 const Header = ({ onSearchResults, onFilterChange, onClearSearch }) => {
-  const { content, isLoading, error, setSearchQuery, setFilters } =
+  const { content, isLoading, error, setSearchQuery, setFilters, filters } =
     useContentSearch();
 
   const handleSearch = (query) => {
@@ -24,6 +24,17 @@ const Header = ({ onSearchResults, onFilterChange, onClearSearch }) => {
       ...newFilters,
     }));
     onFilterChange(newFilters);
+  };
+
+  const handleClear = () => {
+    setSearchQuery("");
+    setFilters({
+      mediaType: "",
+      genre: "",
+      sortBy: "popularity.desc",
+      rating: "",
+    });
+    onClearSearch();
   };
 
   return (
@@ -48,8 +59,8 @@ const Header = ({ onSearchResults, onFilterChange, onClearSearch }) => {
             <p className="mb-8 text-md text-white">
               Your ultimate movie and TV show search engine.
             </p>
-            <SearchBar onSearch={handleSearch} onClear={onClearSearch} />
-            <Filter onFilterChange={handleFilterChange} />
+            <SearchBar onSearch={handleSearch} onClear={handleClear} />
+            <Filter onFilterChange={handleFilterChange} filters={filters} />
           </div>
         </div>
       </div>

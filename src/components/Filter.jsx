@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Filter = ({ onFilterChange }) => {
+const Filter = ({ onFilterChange, filters }) => {
   const handleMediaTypeChange = (e) => {
     onFilterChange({ mediaType: e.target.value });
   };
@@ -19,22 +19,18 @@ const Filter = ({ onFilterChange }) => {
       <select
         className="select select-bordered rounded-xs w-auto min-w-[120px] smalltext-theme-adaptive font-semibold"
         onChange={handleMediaTypeChange}
-        defaultValue=""
+        value={filters.mediaType}
       >
-        <option value="" disabled>
-          Media Type
-        </option>
+        <option value="">Media Type</option>
         <option value="movie">Movie</option>
         <option value="tv">TV Show</option>
       </select>
       <select
         className="select select-bordered rounded-xs w-auto min-w-[120px] smalltext-theme-adaptive font-semibold"
         onChange={handleGenreChange}
-        defaultValue=""
+        value={filters.genre}
       >
-        <option value="" disabled>
-          Genre
-        </option>
+        <option value="">Genre</option>
         <option value="28">Action</option>
         <option value="35">Comedy</option>
         <option value="18">Drama</option>
@@ -42,7 +38,7 @@ const Filter = ({ onFilterChange }) => {
       <select
         className="select select-bordered rounded-xs w-auto min-w-[120px] smalltext-theme-adaptive font-semibold"
         onChange={handleSortByChange}
-        defaultValue="vote_average.desc"
+        value={filters.sortBy}
       >
         <option value="vote_average.desc">Highest Rating</option>
         <option value="vote_average.asc">Lowest Rating</option>
@@ -53,6 +49,7 @@ const Filter = ({ onFilterChange }) => {
 
 Filter.propTypes = {
   onFilterChange: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired,
 };
 
 export default Filter;
