@@ -1,9 +1,11 @@
 import axios from "axios";
 
+// API configuration
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
+// Create an axios instance with base configuration
 const api = axios.create({
   baseURL: BASE_URL,
   params: {
@@ -11,6 +13,7 @@ const api = axios.create({
   },
 });
 
+// Generic function to fetch data from the API
 const fetchFromAPI = async (endpoint, params = {}) => {
   try {
     const response = await api.get(endpoint, { params });
@@ -21,6 +24,7 @@ const fetchFromAPI = async (endpoint, params = {}) => {
   }
 };
 
+// Function to search for movies and TV shows with filters
 export const searchMultiWithFilters = async (query, filters, page = 1) => {
   try {
     const params = {
@@ -84,6 +88,7 @@ export const searchMultiWithFilters = async (query, filters, page = 1) => {
   }
 };
 
+// Function to get details of a movie or TV show
 export const getDetails = async (id, type) => {
   try {
     const response = await api.get(`/${type}/${id}`, {
@@ -97,6 +102,8 @@ export const getDetails = async (id, type) => {
     throw error;
   }
 };
+
+// Function to get movie details
 export const getMovieDetails = async (id) => {
   try {
     const response = await axios.get(
@@ -109,6 +116,7 @@ export const getMovieDetails = async (id) => {
   }
 };
 
+// Function to get TV show details
 export const getTVShowDetails = async (id) => {
   try {
     const response = await axios.get(
@@ -120,35 +128,8 @@ export const getTVShowDetails = async (id) => {
     throw error;
   }
 };
-export const searchByTitle = async (title, year = "", type = "movie") => {
-  const filters = {
-    mediaType: type,
-    genre: "", // Add genre if needed
-    year,
-    sortBy: "vote_average.desc",
-  };
 
-  const result = await searchMultiWithFilters(title, filters);
-  if (result.Response === "True" && result.Search.length > 0) {
-    const item = result.Search.find((i) => i.media_type === type);
-    if (item) {
-      if (year) {
-        const releaseDate =
-          type === "movie" ? item.release_date : item.first_air_date;
-        if (releaseDate && releaseDate.startsWith(year)) {
-          return item;
-        }
-      } else {
-        return item;
-      }
-    }
-  }
-
-  return {
-    Response: "False",
-    Error: `${type.charAt(0).toUpperCase() + type.slice(1)} not found!`,
-  };
-};
+// Function to get content for a specific category
 export const getCategoryContent = async (category, page = 1) => {
   try {
     const movieResponse = await fetchFromAPI("/discover/movie", {
@@ -181,22 +162,13 @@ export const getCategoryContent = async (category, page = 1) => {
     throw error;
   }
 };
-export const getSeasonEpisodes = async (tvId, season) => {
-  return fetchFromAPI(`/tv/${tvId}/season/${season}`);
-};
 
-export const getEpisodeDetails = async (tvId, season, episode) => {
-  return fetchFromAPI(`/tv/${tvId}/season/${season}/episode/${episode}`);
-};
-
+// Function to get the full URL for a poster image
 export const getPosterUrl = (posterPath) => {
   return posterPath ? `${IMAGE_BASE_URL}${posterPath}` : null;
 };
 
-export const advancedSearch = async (params, type = "movie") => {
-  return fetchFromAPI(`/discover/${type}`, params);
-};
-
+// Function to generate random movie notifications
 export const getMovieNotifications = async () => {
   try {
     const count = Math.floor(Math.random() * 5) + 3; // Random count between 3 and 7
