@@ -1,3 +1,4 @@
+// Import necessary dependencies and components
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
@@ -12,6 +13,7 @@ import MyFavorites from "./components/MyFavorites";
 import { searchMultiWithFilters } from "./services/api";
 
 function App() {
+  // State for search results, loading status, errors, and pagination
   const [searchState, setSearchState] = useState({
     content: [],
     isLoading: false,
@@ -21,6 +23,7 @@ function App() {
     totalPages: 1,
   });
 
+  // State for search filters
   const [filters, setFilters] = useState({
     mediaType: "",
     genre: "",
@@ -28,6 +31,7 @@ function App() {
     rating: "",
   });
 
+  // Handle search results and update state
   const handleSearchResults = (results) => {
     setSearchState((prevState) => ({
       ...prevState,
@@ -39,6 +43,7 @@ function App() {
     }));
   };
 
+  // Handle page change for pagination
   const handlePageChange = (newPage) => {
     setSearchState((prevState) => ({
       ...prevState,
@@ -47,12 +52,14 @@ function App() {
     performSearchWithFilters(newPage);
   };
 
+  // Get paginated content for current page
   const getPaginatedContent = () => {
     const startIndex = (searchState.currentPage - 1) * 8;
     const endIndex = startIndex + 8;
     return searchState.content.slice(startIndex, endIndex);
   };
 
+  // Handle filter changes and trigger new search
   const handleFilterChange = (newFilters) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -61,6 +68,7 @@ function App() {
     performSearchWithFilters();
   };
 
+  // Perform search with current filters
   const performSearchWithFilters = async (page = 1) => {
     setSearchState((prevState) => ({
       ...prevState,
@@ -80,6 +88,7 @@ function App() {
     }
   };
 
+  // Clear search results and reset filters
   const handleClearSearch = () => {
     setSearchState({
       content: [],
@@ -97,10 +106,12 @@ function App() {
     });
   };
 
+  // Render the application
   return (
     <ThemeProvider>
       <Router>
         <Routes>
+          {/* Home route */}
           <Route
             path="/"
             element={
@@ -109,10 +120,13 @@ function App() {
                 onFilterChange={handleFilterChange}
                 onClearSearch={handleClearSearch}
               >
+                {/* Show loading state if isLoading is true */}
                 {searchState.isLoading && <LoadingState />}
+                {/* Show error message if there's an error */}
                 {searchState.error && (
                   <p className="text-red-500">{searchState.error}</p>
                 )}
+                {/* Show content list if not loading and no error */}
                 {!searchState.isLoading && !searchState.error && (
                   <ContentList
                     content={getPaginatedContent()}
@@ -125,10 +139,15 @@ function App() {
               </MainLayout>
             }
           />
+          {/* Content detail route */}
           <Route path="/:mediaType/:id" element={<ContentDetail />} />
+          {/* About me route */}
           <Route path="/about" element={<AboutMe />} />
+          {/* Category page route */}
           <Route path="/category/:category" element={<CategoryPage />} />
+          {/* FAQs route */}
           <Route path="/faqs" element={<FAQs />} />
+          {/* Favorites route */}
           <Route path="/favorites" element={<MyFavorites />} />
         </Routes>
       </Router>

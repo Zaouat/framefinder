@@ -2,6 +2,7 @@ import React from "react";
 import { FaSearch } from "react-icons/fa";
 import ContentCard from "./ContentCard";
 
+// ContentList component to display search results
 const ContentList = ({
   content,
   onSelectContent,
@@ -10,6 +11,7 @@ const ContentList = ({
   totalPages,
   onPageChange,
 }) => {
+  // Display initial state when no search has been performed
   if (!hasSearched) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full p-4 animate-fadeIn">
@@ -25,6 +27,7 @@ const ContentList = ({
     );
   }
 
+  // Display message when search is performed but no results are found
   if (hasSearched && content.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full p-4 animate-fadeIn">
@@ -40,6 +43,7 @@ const ContentList = ({
     );
   }
 
+  // Render pagination controls
   const renderPagination = () => {
     return (
       <div className="flex justify-center mt-8">
@@ -66,14 +70,17 @@ const ContentList = ({
     );
   };
 
+  // Render the main content list
   return (
     <div className="animate-fadeIn container mx-auto px-4 sm:px-6 lg:px-8 mb-8 max-w-7xl">
+      {/* Search results header */}
       <div className="flex items-center mb-4 text-gray-400">
         <FaSearch className="mr-2" size={14} />
         <h2 className="text-sm sm:text-md font-semibold uppercase">
           Search Results
         </h2>
       </div>
+      {/* Grid of content cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6 ">
         {content.map((item) => (
           <ContentCard
@@ -84,6 +91,7 @@ const ContentList = ({
           />
         ))}
       </div>
+      {/* Render pagination if there's more than one page */}
       {totalPages > 1 && renderPagination()}
     </div>
   );

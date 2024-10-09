@@ -16,20 +16,26 @@ import {
   FaHeart,
 } from "react-icons/fa";
 
+// ContentDetail component: Displays detailed information about a movie or TV show
 const ContentDetail = () => {
+  // Extract id and mediaType from URL parameters
   const { id, mediaType } = useParams();
+
+  // State variables
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
-  const [selectedSeason, setSelectedSeason] = useState(1);
-  const location = useLocation();
   const [isFromCategory, setIsFromCategory] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentTheme, setCurrentTheme] = useState(
     document.documentElement.getAttribute("data-theme")
   );
+
+  const location = useLocation();
+
   useEffect(() => {
+    // Function to fetch content details
     const fetchContentDetails = async () => {
       try {
         let details;
@@ -61,6 +67,7 @@ const ContentDetail = () => {
 
     fetchContentDetails();
 
+    // Function to handle theme changes
     const handleThemeChange = () => {
       setCurrentTheme(document.documentElement.getAttribute("data-theme"));
     };
@@ -71,11 +78,14 @@ const ContentDetail = () => {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
+
+    // Cleanup function
     return () => {
       observer.disconnect(); // Cleanup the observer on unmount
     };
   }, [id, mediaType, location]);
 
+  // Function to toggle favorite status
   const toggleFavorite = () => {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     const contentToSave = {
@@ -83,7 +93,7 @@ const ContentDetail = () => {
       title: content.title || content.name,
       posterPath: content.poster_path,
       mediaType: mediaType,
-      voteAverage: content.vote_average, // Add this line
+      voteAverage: content.vote_average,
     };
 
     if (isFavorite) {
@@ -99,12 +109,16 @@ const ContentDetail = () => {
     setIsFavorite(!isFavorite);
   };
 
+  // Loading state
   if (loading) return <PageTransition />;
+  // Error state
   if (error)
     return <div className="text-center mt-20 text-red-500">{error}</div>;
+  // No content state
   if (!content)
     return <div className="text-center mt-20">No content details found</div>;
 
+  // Array of background colors for genre tags
   const categoryColors = [
     "bg-blue-600",
     "bg-green-600",
@@ -115,11 +129,13 @@ const ContentDetail = () => {
     "bg-purple-600",
   ];
 
+  // Function to generate avatar image URL
   const getAvatarImage = (name) => {
     const seed = encodeURIComponent(name.trim().toLowerCase());
     return `https://api.dicebear.com/6.x/avataaars/svg?seed=${seed}`;
   };
 
+  // Function to render a person card (for cast and crew)
   const renderPersonCard = (person, role) => (
     <div
       key={person.id || person.credit_id}
@@ -141,6 +157,7 @@ const ContentDetail = () => {
     </div>
   );
 
+  // Trailer modal component
   const TrailerModal = () => (
     <div
       className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
@@ -176,6 +193,7 @@ const ContentDetail = () => {
     </div>
   );
 
+  // Extract common properties
   const title = content.title || content.name;
   const releaseDate = content.release_date || content.first_air_date;
   const runtime =
@@ -189,6 +207,7 @@ const ContentDetail = () => {
         isfromcategory={location.state?.fromCategory}
       />
       <main className="flex-grow sm:pt-20 pt-0">
+        {/* Background image */}
         <div
           className="absolute top-0 left-0 w-full h-72 bg-cover bg-center opacity-20 blur-xs"
           style={{
@@ -202,6 +221,7 @@ const ContentDetail = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:py-12 py-4 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* Poster and trailer button */}
             <div className="md:col-span-1 relative">
               <img
                 src={
@@ -232,7 +252,9 @@ const ContentDetail = () => {
                 </div>
               )}
             </div>
+            {/* Content details */}
             <div className="md:col-span-2 sm:pt-8 pt-0 md:pt-28">
+              {/* Title and favorite button */}
               <div className="relative mb-4 pr-16">
                 <div className="max-w-full">
                   <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold break-words pr-2">
@@ -250,6 +272,7 @@ const ContentDetail = () => {
                   </button>
                 </div>
               </div>
+              {/* Content metadata */}
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <span className="px-3 py-2 rounded-full text-sm font-bold bg-purple-600 text-white">
                   {mediaType === "movie" ? "Movie" : "TV Show"}
@@ -269,6 +292,7 @@ const ContentDetail = () => {
                   TMDB
                 </a>
               </div>
+              {/* Genres */}
               <div className="mb-6">
                 {content.genres?.map((genre, index) => (
                   <span
@@ -281,7 +305,9 @@ const ContentDetail = () => {
                   </span>
                 ))}
               </div>
+              {/* Overview */}
               <p className="text-base md:text-lg mb-6">{content.overview}</p>
+              {/* Release date and duration */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div className="flex items-center">
                   <FaCalendar className="mr-2 text-gray-400" />
@@ -303,6 +329,7 @@ const ContentDetail = () => {
                   </div>
                 )}
               </div>
+              {/* TV show specific information */}
               {mediaType === "tv" &&
                 content.seasons &&
                 content.seasons.length > 0 && (
@@ -321,6 +348,7 @@ const ContentDetail = () => {
                     </div>
                   </div>
                 )}
+              {/* Cast section */}
               <div className="mb-6">
                 <h2 className="text-xl md:text-2xl font-semibold mb-4">Cast</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
@@ -331,20 +359,23 @@ const ContentDetail = () => {
                     )}
                 </div>
               </div>
+              {/* Crew section */}
               <div className="mb-6">
                 <h2 className="text-xl md:text-2xl font-semibold mb-4">
                   {mediaType === "movie" ? "Director(s)" : "Creator(s)"}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {mediaType === "movie"
-                    ? content.credits?.crew
-                        ?.filter((person) => person.job === "Director")
-                        .map((director) =>
-                          renderPersonCard(director, "Director")
-                        )
-                    : content.created_by?.map((creator) =>
-                        renderPersonCard(creator, "Creator")
-                      )}
+                  {content.credits?.crew
+                    ?.filter(
+                      (crewMember) =>
+                        crewMember.job === "Director" ||
+                        crewMember.job === "Screenplay" ||
+                        crewMember.job === "Producer"
+                    )
+                    .slice(0, 6)
+                    .map((crewMember) =>
+                      renderPersonCard(crewMember, crewMember.job)
+                    )}
                 </div>
               </div>
             </div>
